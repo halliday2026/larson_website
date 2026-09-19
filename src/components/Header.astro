@@ -17,11 +17,10 @@ import Icon from './Icon.astro';
     class="container-wide flex flex-row items-center px-[10px] py-[10px] md:px-[20px] lg:px-0"
   >
     <!--
-      Brand. The original carried a "Larson Safety LLC." wordmark beside the
-      logo; it was removed upstream on 2026-09-18 and the group switched from
-      centred to flex-start. See PORTING-NOTES.md to restore it.
+      Brand. Restored per PORTING-NOTES.md — the wordmark was briefly removed
+      upstream mid-port (2026-09-18) but the site owner wants it kept.
     -->
-    <div class="flex w-[40%] items-center justify-start gap-0 lg:w-[20%] lg:gap-[10px]">
+    <div class="flex w-[40%] items-center justify-center gap-0 lg:w-[20%] lg:gap-[10px]">
       <a href="#top" class="flex w-[23%] shrink-0 items-center md:w-[25%]" aria-label={site.name}>
         <Image
           src={logo}
@@ -31,6 +30,12 @@ import Icon from './Icon.astro';
           class="w-full md:w-[85%] lg:w-full"
           loading="eager"
         />
+      </a>
+      <a
+        href="#top"
+        class="font-sans text-[9px] font-semibold uppercase leading-none text-navy-500 md:text-[16px]"
+      >
+        {site.name}
       </a>
     </div>
 

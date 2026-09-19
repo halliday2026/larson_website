@@ -80,7 +80,7 @@ Section eyebrow "How We Work", heading "From first walkthrough to lasting
 compliance", intro "A straightforward, four-step engagement — so you always know
 where you stand and what happens next." Grid is 4 columns → 2 → 1.
 
-### The header wordmark, removed upstream mid-port
+### The header wordmark — briefly removed upstream, restored by request
 
 When this port began, the header showed a "Larson Safety LLC." wordmark beside
 the logo. **On 2026-09-18, while the port was in progress, the live site was
@@ -88,18 +88,14 @@ re-published with that heading deleted** and the logo group switched from
 `justify-content: center` to `flex-start`. Nothing else on the page changed —
 the page and footer stylesheets are byte-identical across the two versions.
 
-This port matches the **current** live state: logo only, left-aligned. The
-company name is still present as the logo link's accessible name and in the
-page `<title>`.
-
-To bring the wordmark back, add this next to the logo link in `Header.astro`
-and change the group's `justify-start` back to `justify-center`:
-
-```astro
-<a href="#top" class="font-sans text-[9px] font-semibold uppercase leading-none text-navy-500 md:text-[16px]">
-  {site.name}
-</a>
-```
+The port briefly matched that live state (logo only, left-aligned), but the
+site owner asked for the wordmark back, so it is **restored** in
+`Header.astro`: the brand group is `justify-center` again and the wordmark
+sits beside the logo, both matching the original pre-2026-09-18 markup and
+sizing (9px uppercase, scaling to 16px at tablet+). This is now a deliberate
+divergence from whatever the live WordPress site currently shows — if it gets
+re-published again, don't resync the header without checking with the owner
+first.
 
 ---
 
