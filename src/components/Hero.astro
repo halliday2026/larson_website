@@ -1,0 +1,67 @@
+---
+import { hero } from '../data/content';
+import Icon from './Icon.astro';
+
+/*
+  Original: container debaeae.
+  Navy #0B1735 base with the safety photo as a 4%-opacity ::before overlay —
+  the photograph is almost invisible by design.
+  min-height 90vh -> 85vh @<=1024. Inner width 1280px.
+*/
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section
+  id="top"
+  class="hero relative flex min-h-[85vh] flex-col justify-center overflow-hidden bg-navy-900 px-[10px] py-[50px] md:px-[20px] md:py-0 lg:min-h-[90vh] lg:px-0"
+  style={`--hero-image: url('${base}/img/hero-safety.jpg')`}
+>
+  <div class="container-wide relative z-10 flex flex-col items-start gap-[20px]">
+    <p class="font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]">
+      {hero.eyebrow}
+    </p>
+
+    <h1
+      class="max-w-full font-sans text-[40px] font-medium leading-[50px] text-white md:text-[55px] md:leading-[70px] lg:max-w-[85%] lg:leading-[72px]"
+    >
+      {hero.title}
+    </h1>
+
+    <p
+      class="max-w-full font-sans text-[16px] font-normal leading-[26px] text-body-inverse md:text-[18px] md:leading-[30px] lg:max-w-[75%]"
+    >
+      {hero.body}
+    </p>
+
+    <div class="flex w-full flex-col-reverse gap-[15px] md:w-auto md:flex-row md:gap-[20px]">
+      <a
+        href={hero.primaryCta.href}
+        class="btn-lift inline-flex items-center justify-center gap-[10px] bg-orange-600 px-[30px] py-[15px] font-sans text-[11px] font-medium uppercase leading-none text-black hover:text-white md:py-[20px] md:text-[14px]"
+      >
+        <Icon name="arrow-right" class="order-2 h-[1em] w-[1em]" />
+        <span>{hero.primaryCta.label}</span>
+      </a>
+
+      <a
+        href={hero.secondaryCta.href}
+        class="btn-lift inline-flex items-center justify-center border border-[#C7C6C6] bg-transparent px-[20px] py-[15px] font-sans text-[12px] font-medium uppercase leading-none text-white hover:bg-white/[0.16] md:px-[30px] md:py-[20px] md:text-[14px]"
+      >
+        {hero.secondaryCta.label}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Elementor renders the background image as a 4%-opacity overlay layer. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--hero-image);
+    background-position: center;
+    background-size: cover;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+</style>

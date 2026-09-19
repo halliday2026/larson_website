@@ -1,0 +1,171 @@
+---
+/*
+  Replaces the Elementor Pro form widget (d272623), which POSTed to WordPress
+  admin-ajax and cannot work on a static host. Field set, labels, required flags
+  and submit copy are unchanged; only the transport differs.
+
+  Endpoint comes from PUBLIC_FORM_ENDPOINT (see .env.example). When it is unset
+  the form renders disabled with a visible notice rather than silently failing.
+
+  Field styling (Elementor "md" size): 16px, min-height 47px, 6px/16px padding,
+  4px radius, background #FFFFFF08, border #B4B4B41F.
+  Labels: 12px uppercase, 1px tracking, #BEBEBE, 9px bottom padding.
+*/
+import { contact, site } from '../data/content';
+
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const configured = endpoint.length > 0;
+
+if (!configured) {
+  // Developer-facing; visitors get the phone/email fallback rendered below.
+  console.warn(
+    '[contact form] PUBLIC_FORM_ENDPOINT is not set — the form will render disabled. See PORTING-NOTES.md.'
+  );
+}
+
+const fieldClass =
+  'block w-full min-h-[47px] rounded-[4px] border border-[#B4B4B41F] bg-white/[0.03] px-[16px] py-[6px] font-roboto text-[16px] leading-[1.4] text-white transition-colors focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 disabled:cursor-not-allowed disabled:opacity-50';
+const labelClass =
+  'block pb-[9px] font-sans text-[12px] font-normal uppercase leading-none tracking-[1px] text-[#BEBEBE]';
+---
+
+<form
+  id="contact-form"
+  class="flex flex-col"
+  method="post"
+  action={endpoint}
+  novalidate={configured ? true : undefined}
+  data-configured={configured ? 'true' : 'false'}
+>
+  {
+    !configured && (
+      <p
+        class="mb-[20px] rounded-[4px] border border-amber-500/40 bg-amber-500/10 px-[16px] py-[12px] font-sans text-[14px] leading-[22px] text-amber-500"
+        role="status"
+      >
+        This form isn’t accepting submissions yet. Please call{' '}
+        <a class="underline" href={site.phoneHref}>
+          {site.phone}
+        </a>{' '}
+        or email{' '}
+        <a class="underline" href={`mailto:${site.email}`}>
+          {site.email}
+        </a>
+        .
+      </p>
+    )
+  }
+
+  <div class="mb-[20px]">
+    <label class={labelClass} for="form-field-name">Name</label>
+    <input
+      class={fieldClass}
+      type="text"
+      id="form-field-name"
+      name="name"
+      autocomplete="name"
+      disabled={!configured}
+    />
+  </div>
+
+  <div class="mb-[20px]">
+    <label class={labelClass} for="form-field-email">Email</label>
+    <input
+      class={fieldClass}
+      type="email"
+      id="form-field-email"
+      name="email"
+      autocomplete="email"
+      required
+      disabled={!configured}
+    />
+  </div>
+
+  <div class="mb-[20px]">
+    <label class={labelClass} for="form-field-phone">Phone</label>
+    <input
+      class={fieldClass}
+      type="tel"
+      id="form-field-phone"
+      name="phone"
+      autocomplete="tel"
+      required
+      disabled={!configured}
+    />
+  </div>
+
+  <div class="mb-[20px]">
+    <label class={labelClass} for="form-field-message">Message</label>
+    <textarea
+      class={fieldClass}
+      id="form-field-message"
+      name="message"
+      rows="4"
+      disabled={!configured}></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="min-h-[47px] w-full rounded-[4px] bg-orange-500 px-[30px] py-[15px] font-sans text-[12px] font-medium leading-none text-navy-800 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:text-[15px]"
+    disabled={!configured}
+  >
+    {contact.submitLabel}
+  </button>
+
+  <p
+    id="form-status"
+    role="status"
+    aria-live="polite"
+    hidden
+    class="mt-[16px] font-sans text-[14px] leading-[22px]"
+  >
+  </p>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  if (form && status && form.dataset.configured === 'true') {
+    const say = (message: string, ok: boolean) => {
+      status.textContent = message;
+      status.hidden = false;
+      status.classList.toggle('text-green-400', ok);
+      status.classList.toggle('text-red-400', !ok);
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // novalidate is set so we control when the browser's messages appear.
+      if (!form.reportValidity()) return;
+
+      const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const original = submit.textContent;
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      status.hidden = true;
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) throw new Error(String(response.status));
+
+        form.reset();
+        say('Thanks — your request has been sent. We’ll be in touch shortly.', true);
+      } catch {
+        say(
+          'Sorry, that didn’t send. Please call (904) 517-2187 or email bill@larsonsafe.com.',
+          false
+        );
+      } finally {
+        submit.disabled = false;
+        submit.textContent = original;
+      }
+    });
+  }
+</script>

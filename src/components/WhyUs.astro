@@ -1,0 +1,105 @@
+---
+import { whyUs } from '../data/content';
+import Icon from './Icon.astro';
+
+/*
+  Original: container 95d2d21 (row, gap 40px, #F8FAFC), anchor #about.
+  Left column 552d25a holds the eyebrow, title and the credential card 966ff3d
+  (#0B1B32, 8px radius, favicon watermark at 7% opacity, 40/30/15px padding).
+  Right column 6a1f895 holds the lead paragraph and four check rows, each with a
+  1px #A0A0A073 bottom rule.
+*/
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section id="about" class="section-pad bg-surface-100">
+  <div class="container-wide flex flex-col gap-[40px] lg:flex-row">
+    <!-- Left: heading + credential card -->
+    <div class="flex flex-1 flex-col gap-[20px]">
+      <p
+        class="font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]"
+      >
+        {whyUs.eyebrow}
+      </p>
+      <h2
+        class="font-sans text-[30px] font-semibold leading-[40px] text-[#0B1B32] md:text-[40px] md:leading-[50px] lg:text-[30px] lg:leading-[40px]"
+      >
+        {whyUs.title}
+      </h2>
+
+      <div
+        class="credential-card relative flex flex-col gap-[20px] overflow-hidden rounded-[8px] bg-[#0B1B32] p-[15px] md:p-[30px] lg:p-[40px]"
+        style={`--watermark: url('${base}/img/badge-watermark.png')`}
+      >
+        <p
+          class="relative z-10 font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]"
+        >
+          {whyUs.credentialLabel}
+        </p>
+
+        <div class="relative z-10 flex flex-col items-start gap-[15px] text-start md:flex-row">
+          <span class="mt-[10px] shrink-0 text-[60px] leading-none text-orange-500">
+            <Icon name="verified-badge" class="block h-[1em] w-[1em]" />
+          </span>
+          <div class="grow">
+            <h3
+              class="mb-[10px] mt-[8px] font-sans text-[25px] font-semibold leading-[36px] text-white md:text-[33px] md:leading-[50px] lg:text-[40px]"
+            >
+              {whyUs.credentialTitle}
+            </h3>
+            <p class="font-sans text-[15px] font-normal leading-[25px] text-[#F1F1F1] md:text-[16px] md:leading-[26px]">
+              {whyUs.credentialBody}
+            </p>
+          </div>
+        </div>
+
+        <hr class="relative z-10 w-full border-0 border-t border-solid border-[#4C607C]" />
+
+        <div class="relative z-10 flex flex-row items-center gap-[10px] md:w-[61%] md:gap-0">
+          <p class="w-[19%] font-sans text-[30px] font-semibold leading-none text-orange-500 md:w-[25%] md:text-[32px]">
+            {whyUs.statValue}
+          </p>
+          <p class="w-[77%] text-start font-roboto text-[16px] font-normal leading-[28px] text-[#C7C7C7] md:w-auto md:text-[18px]">
+            {whyUs.statLabel}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: lead + check list -->
+    <div class="flex flex-1 flex-col justify-end gap-[20px]">
+      <p class="mb-[14.4px] font-sans text-[15px] font-normal leading-[25px] text-black md:text-[16px] md:leading-[31px]">
+        {whyUs.lead}
+      </p>
+
+      {
+        whyUs.points.map((point) => (
+          /* Row height comes from the text's 8px/16px margins, not row padding. */
+          <div class="flex flex-row items-start gap-[15px] border-b border-[#A0A0A073]">
+            <span class="mt-[10px] inline-block shrink-0 rounded-[10%] bg-[#F0900C30] p-[0.5em] text-[14px] leading-none text-[#F0900CFC]">
+              <Icon name="check" class="block h-[1em] w-[1em]" />
+            </span>
+            <p class="mb-[16px] mt-[8px] grow font-sans text-[16px] font-normal leading-[26px] text-body">
+              {point}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Favicon watermark, 7% opacity, cover — matches Elementor's overlay layer. */
+  .credential-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--watermark);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+import { contact, site } from '../data/content';
+import ContactForm from './ContactForm.astro';
+import Icon from './Icon.astro';
+
+/*
+  Original: container de581ba (row, #0B1F3A), anchor #cta.
+  Left f71e302 50% with 40px right padding; right a8f8d39 50%, #152842 card,
+  8px radius, 35px padding (20px @<=767). Both full width at <=1024px.
+*/
+---
+
+<section id="cta" class="section-pad bg-navy-800">
+  <div class="container-wide flex flex-col gap-[20px] lg:flex-row">
+    <!-- Left: copy + contact details -->
+    <div class="relative z-10 flex flex-col gap-[20px] md:pr-[40px] lg:w-1/2">
+      <p
+        class="font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]"
+      >
+        {contact.eyebrow}
+      </p>
+      <h2
+        class="font-sans text-[30px] font-semibold leading-[40px] text-white md:text-[40px] md:leading-[50px] lg:text-[45px] lg:leading-[60px]"
+      >
+        {contact.title}
+      </h2>
+      <p class="font-sans text-[15px] font-normal leading-[25px] text-[#F1F1F1] md:text-[16px] md:leading-[31px]">
+        {contact.body}
+      </p>
+
+      <ul class="flex flex-col">
+        <li class="flex items-center gap-[8px] pb-[4px]">
+          <Icon name="phone-alt" class="h-[13px] w-[13px] shrink-0 text-white" />
+          <a
+            href={site.phoneHref}
+            class="font-sans text-[14px] font-normal text-white transition-colors hover:text-orange-500"
+          >
+            {site.phone}
+          </a>
+        </li>
+        <li class="flex items-center gap-[8px] pt-[4px]">
+          <Icon name="envelope" class="h-[13px] w-[13px] shrink-0 text-white" />
+          <a
+            href={`mailto:${site.email}`}
+            class="font-sans text-[14px] font-normal text-white transition-colors hover:text-orange-500"
+          >
+            {site.email}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right: form card -->
+    <div class="rounded-[8px] bg-[#152842] p-[20px] md:p-[35px] lg:w-1/2">
+      <ContactForm />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { icons, verifiedBadge } from '../icons';
+
+interface Props {
+  name: string;
+  class?: string;
+  /** Rendered inside a text run, so it defaults to hidden from AT. */
+  label?: string;
+}
+
+const { name, class: className = '', label } = Astro.props;
+
+const a11y: HTMLAttributes<'svg'> = label
+  ? { role: 'img', 'aria-label': label }
+  : { 'aria-hidden': 'true' };
+
+const icon = icons[name];
+
+if (!icon && name !== 'verified-badge') {
+  throw new Error(`Icon "${name}" is not in src/icons.ts`);
+}
+---
+
+{
+  name === 'verified-badge' ? (
+    <svg
+      viewBox={verifiedBadge.viewBox}
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      class={className}
+      {...a11y}
+    >
+      <path d={verifiedBadge.paths[0]} />
+      <path d={verifiedBadge.paths[1]} stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  ) : (
+    <svg viewBox={icon.viewBox} fill="currentColor" class={className} {...a11y}>
+      <path d={icon.d} />
+    </svg>
+  )
+}

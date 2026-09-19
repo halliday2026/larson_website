@@ -1,0 +1,79 @@
+---
+import { faq } from '../data/content';
+import Icon from './Icon.astro';
+
+/*
+  Original: container ab2eb36 + nested-accordion bb294d2.
+  The builder already emits native <details>/<summary>, so the open/close needs
+  no JavaScript — only the "one open at a time" rule (max_items_expended: one)
+  does. Accordion is 60% wide and centered, 100% at <=1024px.
+  Title 18px/28px (17px/26px mobile), 20px 20px 20px 0 padding, 1px bottom rule.
+*/
+---
+
+<section class="section-pad">
+  <div class="container-wide flex flex-col items-center gap-[20px]">
+    <p
+      class="w-full text-start font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-center md:text-[12px] md:leading-none md:tracking-[0.22em]"
+    >
+      {faq.eyebrow}
+    </p>
+
+    <h2
+      class="w-full text-start font-sans text-[30px] font-semibold leading-[40px] text-black md:text-center md:text-[40px] md:leading-[50px] lg:text-[45px] lg:leading-[60px]"
+    >
+      {faq.title}
+    </h2>
+
+    <p
+      class="w-full max-w-full self-center text-start font-sans text-[15px] font-normal leading-[25px] text-black md:text-center md:text-[16px] md:leading-[31px] lg:max-w-[55%]"
+    >
+      {faq.body}
+    </p>
+
+    <div class="faq w-full max-w-full self-center lg:max-w-[60%]">
+      {
+        faq.items.map((item, i) => (
+          <details name="faq" open={i === 0} class="group border-b border-solid border-[#E4E4E4]">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-[10px] py-[20px] pr-[20px] font-sans text-[17px] font-medium leading-[26px] md:text-[18px] md:leading-[28px]">
+              <span class="grow">{item.q}</span>
+              <Icon name="plus" class="h-[15px] w-[15px] shrink-0 group-open:hidden" />
+              <Icon name="minus" class="hidden h-[15px] w-[15px] shrink-0 group-open:block" />
+            </summary>
+            <div class="border-b border-solid border-[#E4E4E4] py-[20px] pr-0 md:pr-[20px]">
+              <p class="font-sans text-[15px] font-normal leading-[25px]">{item.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Safari still renders the default disclosure marker without this. */
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
+
+<script>
+  /*
+    `name="faq"` gives exclusive accordions natively in current browsers.
+    This fallback covers older ones; it is a no-op where the attribute works.
+    Feature-detected so we never fight the native behaviour.
+  */
+  const supportsExclusive = 'name' in HTMLDetailsElement.prototype;
+
+  if (!supportsExclusive) {
+    const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('.faq details'));
+    for (const item of items) {
+      item.addEventListener('toggle', () => {
+        if (!item.open) return;
+        for (const other of items) {
+          if (other !== item) other.open = false;
+        }
+      });
+    }
+  }
+</script>

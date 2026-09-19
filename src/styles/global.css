@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/inter-tight';
+/* Two headings in the Industries section specify Roboto — the Elementor kit's
+   default family leaking through. Reproduced for parity; see PORTING-NOTES.md. */
+@import '@fontsource-variable/roboto';
+
+/*
+  Design tokens extracted verbatim from the WordPress site's generated Elementor
+  CSS (post-6 kit, post-11 page, post-19 header, post-33 footer).
+  See PORTING-NOTES.md. Do not "tidy" these values — they are the source of truth
+  for visual parity with the original.
+*/
+@theme {
+  /* Elementor breakpoints: desktop >=1025, tablet 768-1024, mobile <=767.
+     Tailwind is min-width, so: unprefixed = mobile, md = tablet+, lg = desktop. */
+  --breakpoint-*: initial;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1025px;
+
+  --color-navy-900: #0b1735; /* hero background */
+  --color-navy-800: #0b1f3a; /* contact section background */
+  --color-navy-700: #173061; /* headings */
+  --color-navy-600: #182b46; /* footer background */
+  --color-navy-500: #183f80; /* brand text + call button */
+  --color-navy-400: #111e3c; /* active nav item */
+
+  --color-orange-600: #f05f06; /* primary CTA */
+  --color-orange-500: #f28321; /* eyebrow text, nav hover */
+  --color-amber-500: #e89a2e; /* accent rules + icons */
+
+  --color-surface-50: #f8f8f8; /* stats bar */
+  --color-surface-100: #f8fafc; /* "Why Larson Safety" */
+  --color-surface-200: #f5f5f5;
+  --color-surface-300: #f2f4f6;
+
+  --color-body: #5e5e5e; /* paragraph text on light */
+  --color-body-inverse: #e7e7e7; /* paragraph text on navy */
+  --color-ink: #464545; /* nav items */
+
+  --font-sans: 'Inter Variable', Inter, sans-serif;
+  --font-display: 'Inter Tight Variable', 'Inter Tight', sans-serif;
+  --font-roboto: 'Roboto Variable', Roboto, sans-serif;
+
+  --container-site: 1140px;
+  --container-wide: 1280px; /* header only */
+}
+
+@layer base {
+  html {
+    /* Matches the original, which smooth-scrolls anchors flush to the top.
+       The header is not sticky, so no scroll-padding is needed. */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+}
+
+@utility container-wide {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-inline: auto;
+}
+
+/*
+  Section rhythm, straight from the Elementor containers:
+  100px block / 0 inline  ->  80px / 20px @<=1024  ->  50px / 10px @<=767
+*/
+@utility section-pad {
+  padding-block: 50px;
+  padding-inline: 10px;
+
+  @media (width >= 768px) {
+    padding-block: 80px;
+    padding-inline: 20px;
+  }
+
+  @media (width >= 1025px) {
+    padding-block: 100px;
+    padding-inline: 0;
+  }
+}
+
+/* Elementor's button transform: translateY(-5px) on hover */
+@utility btn-lift {
+  transition:
+    transform 0.3s,
+    background-color 0.3s,
+    color 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}

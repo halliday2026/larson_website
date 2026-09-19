@@ -1,0 +1,32 @@
+---
+import { stats } from '../data/content';
+
+/*
+  Original: container 8934230 + four image-box widgets (bed0069 …).
+  Flex row, gap 40px, 1px horizontal rules #8D793C40, background #F8F8F8.
+  Each cell carries a 1px right divider #C7C5C58A — the last one included, which
+  is how the original renders; kept as-is for parity.
+  Widths: 22% @tablet, 47% @mobile (so it wraps to two per row), even @desktop.
+*/
+---
+
+<section
+  class="border-y border-[#8D793C40] bg-surface-50 px-[10px] py-[20px] md:px-[20px] lg:px-0 lg:py-[30px]"
+>
+  <div
+    class="container-wide flex flex-row flex-wrap gap-[20px] lg:flex-nowrap lg:gap-[40px]"
+  >
+    {
+      stats.map((stat) => (
+        <div class="w-[47%] border-r border-[#C7C5C58A] md:w-[22%] lg:w-auto lg:flex-1">
+          <p class="mb-0 mt-[8px] font-sans text-[25px] font-bold leading-[35px] text-navy-700 md:mb-0 md:text-[30px] md:leading-[50px] lg:mb-[10px] lg:text-[40px]">
+            {stat.value}
+          </p>
+          <p class="font-sans text-[11px] font-normal leading-[21px] tracking-[1px] md:text-[14px] md:leading-[26px]">
+            {stat.label}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

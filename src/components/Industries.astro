@@ -1,0 +1,85 @@
+---
+import { industries } from '../data/content';
+import Icon from './Icon.astro';
+
+/*
+  Original: container 516d4e8 on #0B1F3A.
+  Grid 81a7f95: 2 cols -> 1 col at <=1024px.
+  Both cards: 1px #182B46 border, 30px padding (20px @<=767),
+  shadow 0 0 10px rgba(11,31,58,.61).
+  Card headings specify "Roboto" in the source CSS — kept for parity.
+*/
+
+/*
+  Icon-list text inherits the Elementor kit's text typography — Roboto 16/24 —
+  rather than Inter. Verified against the live DOM.
+*/
+const listItemClass =
+  'flex items-start gap-[4px] py-[2.5px] font-roboto text-[16px] leading-[24px] text-[#E4E4E4] first:pt-0 last:pb-0';
+---
+
+<section id="industries" class="section-pad bg-navy-800">
+  <!-- The 40px right inset wraps the heading AND the card grid (container 799c7b6). -->
+  <div class="container-wide flex flex-col gap-[20px] lg:pr-[40px]">
+    <div class="relative z-10 flex flex-col gap-[20px]">
+      <p
+        class="font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]"
+      >
+        {industries.eyebrow}
+      </p>
+      <h2
+        class="max-w-full font-sans text-[30px] font-semibold leading-[40px] text-white md:text-[40px] md:leading-[50px] lg:max-w-[90%] lg:text-[45px] lg:leading-[60px]"
+      >
+        {industries.title}
+      </h2>
+      <p class="font-sans text-[15px] font-normal leading-[25px] text-[#F1F1F1] md:text-[16px] md:leading-[31px]">
+        {industries.body}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-[20px] lg:grid-cols-2">
+      <!-- General Industry -->
+      <div
+        class="flex flex-col gap-[20px] border border-[#182B46] p-[20px] shadow-[0px_0px_10px_0px_rgba(11,31,58,0.61)] md:p-[30px]"
+      >
+        <h3 class="font-roboto text-[22px] font-semibold leading-none text-white">
+          {industries.general.title}
+        </h3>
+        <ul>
+          {
+            industries.general.items.map((item) => (
+              <li class={listItemClass}>
+                <Icon name="check" class="mt-[5px] h-[14px] w-[14px] shrink-0 text-white" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Manufacturing expertise -->
+      <div
+        class="flex flex-col gap-[20px] border border-[#182B46] p-[20px] shadow-[0px_0px_10px_0px_rgba(11,31,58,0.61)] md:p-[30px]"
+      >
+        <h3 class="font-roboto text-[22px] font-semibold leading-none text-white">
+          {industries.manufacturing.title}
+        </h3>
+        <div class="flex flex-col gap-[5px] md:w-[92%] md:flex-row md:gap-[20px]">
+          {
+            industries.manufacturing.columns.map((column) => (
+              /* Sub-lists size to their content in the original, not 50/50. */
+              <ul>
+                {column.map((item) => (
+                  <li class={listItemClass}>
+                    <Icon name="check" class="mt-[5px] h-[14px] w-[14px] shrink-0 text-white" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

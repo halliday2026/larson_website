@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from '../data/content';
+
+interface Props {
+  icon: IconName;
+  title: string;
+  body: string;
+}
+
+const { icon, title, body } = Astro.props;
+
+/*
+  Original: grid cell 174df62 wrapping icon-box f5caa40.
+  Cell: 30px padding (15px @<=767), 1px #E0E0E059 border -> #E89A2E30 on hover,
+  8px radius, 0 0 10px rgba(0,0,0,.05) shadow.
+  Icon: elementor-view-stacked + shape-rounded -> 22px glyph, .5em padding,
+  10% radius, #E89A2E on #E89A2E30.
+*/
+---
+
+<div
+  class="group h-full rounded-[8px] border border-[#E0E0E059] p-[15px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.05)] transition-[border-color] duration-300 hover:border-[#E89A2E30] md:p-[30px]"
+>
+  <div class="flex flex-col items-start gap-[10px] text-start">
+    <span
+      class="inline-block rounded-[10%] bg-[#E89A2E30] p-[0.5em] text-[22px] leading-none text-amber-500"
+    >
+      <Icon name={icon} class="block h-[1em] w-[1em]" />
+    </span>
+
+    <div class="w-full grow">
+      <h3
+        class="mb-[10px] mt-[8px] font-sans text-[18px] font-semibold leading-[28px] text-navy-800 md:text-[20px] md:leading-[30px]"
+      >
+        {title}
+      </h3>
+      <p class="font-sans text-[14px] font-normal leading-[24px] md:text-[15px] md:leading-[26px]">
+        {body}
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,155 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo-header.png';
+import { nav, site } from '../data/content';
+import Icon from './Icon.astro';
+
+/*
+  Original: Elementor header template (post-19), container ef981d6.
+  - inner width 1280px, padding 10px block
+  - left group 20% (40% <=1024), right group 80% (60% <=767)
+  - nav collapses to a burger dropdown at <=1024px (elementor-nav-menu--dropdown-tablet)
+*/
+---
+
+<header class="relative z-30 bg-white/55 backdrop-blur-sm">
+  <div
+    class="container-wide flex flex-row items-center px-[10px] py-[10px] md:px-[20px] lg:px-0"
+  >
+    <!--
+      Brand. The original carried a "Larson Safety LLC." wordmark beside the
+      logo; it was removed upstream on 2026-09-18 and the group switched from
+      centred to flex-start. See PORTING-NOTES.md to restore it.
+    -->
+    <div class="flex w-[40%] items-center justify-start gap-0 lg:w-[20%] lg:gap-[10px]">
+      <a href="#top" class="flex w-[23%] shrink-0 items-center md:w-[25%]" aria-label={site.name}>
+        <Image
+          src={logo}
+          alt=""
+          widths={[64, 128]}
+          sizes="64px"
+          class="w-full md:w-[85%] lg:w-full"
+          loading="eager"
+        />
+      </a>
+    </div>
+
+    <!-- Nav + CTA -->
+    <div
+      class="flex w-[60%] flex-row-reverse items-center justify-start md:w-[80%] lg:flex-row lg:justify-end"
+    >
+      <!-- Burger (<=1024px) -->
+      <button
+        type="button"
+        id="menu-toggle"
+        class="flex items-center justify-center bg-transparent p-[5.5px] text-[#020101] lg:hidden"
+        aria-label="Menu Toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="menu-bar" class="h-[25px] w-[25px]" />
+        <Icon name="close" class="hidden h-[25px] w-[25px]" />
+      </button>
+
+      <!-- Desktop nav -->
+      <nav aria-label="Menu" class="hidden lg:block">
+        <ul class="flex flex-row items-center">
+          {
+            nav.map((item, i) => (
+              <li>
+                <a
+                  href={item.href}
+                  data-nav-link
+                  aria-current={i === 0 ? 'page' : undefined}
+                  class:list={[
+                    'block px-[20px] py-[13px] font-sans text-[14px] font-medium uppercase transition-colors hover:text-orange-500',
+                    i === 0 ? 'text-navy-400' : 'text-ink',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <a
+        href={site.phoneHref}
+        class="btn-lift inline-block bg-navy-500 px-[20px] py-[12px] text-center font-sans text-[12px] font-medium uppercase leading-none text-white hover:bg-orange-600 md:px-[20px] md:py-[15px] md:text-[14px] lg:ml-[20px] lg:px-[30px] lg:py-[20px]"
+      >
+        {site.phoneLabel}
+      </a>
+    </div>
+  </div>
+
+  <!--
+    Mobile dropdown (<=1024px).
+    Elementor offsets the dropdown 20px below the toggle; anchored to the header
+    instead, that lands 9px below its bottom edge (measured against the original).
+  -->
+  <nav
+    id="mobile-menu"
+    aria-label="Menu"
+    hidden
+    class="absolute inset-x-0 top-full z-30 mt-[9px] bg-white shadow-[0px_0px_10px_0px_rgba(0,0,0,0.08)] lg:hidden"
+  >
+    <ul>
+      {
+        nav.map((item, i) => (
+          <li>
+            <a
+              href={item.href}
+              data-nav-link
+              aria-current={i === 0 ? 'page' : undefined}
+              class:list={[
+                'block px-[20px] py-[12px] text-start font-sans text-[12px] font-medium uppercase leading-[20px] transition-colors hover:bg-navy-500 hover:text-white',
+                i === 0 ? 'bg-navy-500 text-white' : 'text-[#020101]',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Replaces Elementor's jQuery SmartMenus toggle.
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (toggle && menu) {
+    const [openIcon, closeIcon] = toggle.querySelectorAll('svg');
+
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      openIcon?.classList.toggle('hidden', open);
+      closeIcon?.classList.toggle('hidden', !open);
+    };
+
+    toggle.addEventListener('click', () => {
+      // `hidden` is typed boolean | "until-found"; coerce before toggling.
+      setOpen(Boolean(menu.hidden));
+    });
+
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // The dropdown only exists below 1025px; reset it if the viewport grows.
+    matchMedia('(min-width: 1025px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

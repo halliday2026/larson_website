@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo-footer.png';
+import { footer, site } from '../data/content';
+import Icon from './Icon.astro';
+
+/*
+  Original: footer template (post-33), containers 025a6e7 + 4e5014f on #0A1634.
+  Column widths 40/25/15/15 desktop, 100/40/30/24 tablet, stacking on mobile.
+  Column headings use "Inter Tight" — the only place on the page that does.
+  Legal bar: row space-between, column-reverse at <=1024px, 1px #383838 top rule.
+
+  Deliberate change: the original renders the footer link columns as plain text
+  with no anchors. They point at the matching page sections here — see
+  PORTING-NOTES.md.
+*/
+const contactItems = [
+  { icon: 'map-marker-alt' as const, text: site.location, href: null },
+  { icon: 'phone-alt' as const, text: site.phone, href: site.phoneHref },
+  { icon: 'envelope' as const, text: site.email, href: `mailto:${site.email}` },
+];
+---
+
+<footer class="bg-[#0A1634]">
+  <div class="px-[10px] pb-[30px] pt-[50px] md:px-[20px] lg:px-0 lg:pt-[60px]">
+    <div class="container-wide flex flex-row flex-wrap gap-[20px]">
+      <!-- Brand column -->
+      <!-- 30px bottom margin at tablet only, where this column sits on its own row. -->
+      <div
+        class="flex w-full flex-col gap-[15px] md:mb-[30px] md:w-full md:gap-[20px] lg:mb-0 lg:w-[40%] lg:pr-[100px]"
+      >
+        <Image
+          src={logo}
+          alt=""
+          widths={[80, 160]}
+          sizes="80px"
+          class="w-[76px] md:w-[61px] lg:w-[47px]"
+          loading="lazy"
+        />
+
+        <p class="font-sans text-[14px] font-normal leading-[26px] text-surface-200">
+          {footer.blurb}
+        </p>
+
+        <ul class="flex flex-col">
+          {
+            contactItems.map((item) => (
+              <li class="flex items-center gap-[8px] py-[5px] first:pt-0 last:pb-0">
+                <Icon name={item.icon} class="h-[14px] w-[14px] shrink-0 text-[#F45F06]" />
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    class="font-sans text-[14px] font-normal text-surface-200 transition-colors hover:text-[#F45F06]"
+                  >
+                    {item.text}
+                  </a>
+                ) : (
+                  <span class="font-sans text-[14px] font-normal text-surface-200">{item.text}</span>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Link columns -->
+      {
+        footer.columns.map((column, i) => (
+          <div
+            class:list={[
+              'flex flex-col gap-[20px]',
+              // The Services column carries a 10px bottom margin on mobile only.
+              i === 0 && 'mb-[10px] w-full md:mb-0 md:w-[40%] lg:w-[25%]',
+              i === 1 && 'w-[60%] md:w-[30%] lg:w-[15%] lg:pl-[40px]',
+              i === 2 && 'w-[33%] md:w-[24%] lg:w-[15%] lg:pl-[70px]',
+            ]}
+          >
+            <h2 class="font-display text-[14px] font-medium uppercase leading-[25px] tracking-[1px] text-surface-200">
+              {column.title}
+            </h2>
+            <ul class="flex flex-col">
+              {column.items.map((item) => (
+                <li class="flex items-center py-[5px] first:pt-0 last:pb-0">
+                  <a
+                    href={item.href}
+                    class="font-sans text-[14px] font-normal text-surface-200 transition-colors duration-500 hover:text-[#F45F06]"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Legal bar -->
+  <div class="border-t border-solid border-[#383838] px-[10px] py-[20px] md:px-[20px] lg:px-0 lg:pb-[30px]">
+    <div
+      class="container-wide flex flex-col-reverse gap-[10px] lg:flex-row lg:items-center lg:justify-between lg:gap-0"
+    >
+      <p
+        class="text-start font-sans text-[12px] font-light leading-none text-surface-200 md:text-center md:text-[13px] lg:text-end"
+      >
+        {footer.copyright}
+      </p>
+      <p
+        class="max-w-full self-start text-start font-sans text-[13px] font-light leading-[22px] text-surface-200 md:max-w-[65%] md:self-center md:text-center md:leading-[20px] lg:max-w-full lg:leading-none lg:text-start"
+      >
+        {footer.credential}
+      </p>
+    </div>
+  </div>
+</footer>
