@@ -2,10 +2,10 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
-// GitHub Pages project site: https://halliday2026.github.io/larson_website
+// Custom domain (see public/CNAME) — served from the root, not a sub-path.
 export default defineConfig({
-  site: 'https://halliday2026.github.io',
-  base: '/larson_website',
+  site: 'https://larsonsafe.com',
+  base: '/',
   trailingSlash: 'ignore',
   vite: {
     plugins: [tailwindcss()],

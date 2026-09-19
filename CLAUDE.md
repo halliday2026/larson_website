@@ -9,8 +9,13 @@ Pages. **Read `PORTING-NOTES.md` before changing anything visual.**
 - Tailwind v4 is CSS-first: tokens live in `@theme` in `src/styles/global.css`.
   There is no `tailwind.config.js` and one should not be added.
 - Fonts self-hosted via `@fontsource-variable/{inter,inter-tight,roboto}`
-- `site: 'https://halliday2026.github.io'`, `base: '/larson_website'` — always
-  build asset URLs from `import.meta.env.BASE_URL`, never a bare `/path`.
+- `site: 'https://larsonsafe.com'`, `base: '/'` — the site has a custom domain
+  (`public/CNAME`) and is served from the root, not a GitHub Pages sub-path.
+  Always build asset URLs from `import.meta.env.BASE_URL`, never a bare
+  `/path` — this is what let the base flip from `/larson_website` to `/`
+  without touching component code. `site`, `base` and `public/CNAME` must all
+  agree; a mismatch here is what broke the site's CSS/images on 2026-09-19
+  (see PORTING-NOTES.md).
 
 ## Non-negotiable: fidelity to the original
 
@@ -56,7 +61,7 @@ came from getting this backwards.
 ## Commands
 
 ```sh
-npm run dev        # http://localhost:4321/larson_website/
+npm run dev        # http://localhost:4321/
 npm run build
 npm run preview    # serve dist/ — use for visual verification
 npx astro check    # must stay at 0 errors

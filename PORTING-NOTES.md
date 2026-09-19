@@ -182,5 +182,39 @@ variable-vs-static font metrics, and the FAQ summary font-size (the original
 sets it on an inner span; rendered heights match exactly).
 
 **Re-verifying after changes:** run `npm run build && npm run preview`, then
-drive Playwright against `http://localhost:4321/larson_website/` and the live
-URL side by side. The scripts used are not committed — they were scratch tools.
+drive Playwright against `http://localhost:4321/` and the live URL side by
+side. The scripts used are not committed — they were scratch tools.
+
+---
+
+## 7. Incident: custom domain broke every asset path (2026-09-19)
+
+The site was originally built for `https://halliday2026.github.io/larson_website`
+(a GitHub Pages *project* site, served from a `/larson_website/` sub-path) —
+`astro.config.mjs` had `site: '...github.io'`, `base: '/larson_website'`, and
+every asset URL in the built HTML carried that prefix.
+
+Separately, a custom domain (`larsonsafe.com`) was pointed at this repo's
+GitHub Pages via *Settings → Pages → Custom domain*. GitHub Pages then serves
+the site **from the domain's root**, not under `/larson_website/`, and
+redirects the old `github.io/larson_website/...` URLs there (dropping the
+`/larson_website` prefix entirely). The built HTML still asked for
+`/larson_website/_astro/index.css`, `/larson_website/favicon-32.png`, etc. —
+none of which exist at the domain root — so every stylesheet, script, image
+and favicon 404'd. The page still rendered (HTML has no external
+dependencies to *load*), just with zero CSS: default serif font, blue
+underlined links, no layout. That's what "styles are messed up" looked like.
+
+**Fix:** `astro.config.mjs` now has `site: 'https://larsonsafe.com'`,
+`base: '/'`, and `public/CNAME` contains `larsonsafe.com` (required so the
+Actions-based deploy — which replaces the entire published artifact each
+run — keeps asserting the custom domain, rather than relying solely on the
+repo setting). All internal URLs are built from `import.meta.env.BASE_URL`
+(see `Hero.astro`, `WhyUs.astro`, `Layout.astro`), so this was a one-line
+config change with no component edits needed.
+
+**If the custom domain is ever removed** from *Settings → Pages*, this has to
+be reverted in lockstep: `base` back to `/larson_website`, `site` back to the
+`github.io` URL, and delete `public/CNAME` — or the exact same breakage
+recurs, just inverted (asset paths that used to work on the sub-path will
+404 wherever the site actually lives).

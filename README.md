@@ -3,7 +3,7 @@
 Static [Astro](https://astro.build) + [Tailwind CSS](https://tailwindcss.com)
 port of the Larson Safety WordPress site, built to deploy to GitHub Pages.
 
-Deploys to **https://halliday2026.github.io/larson_website**
+Deploys to **https://larsonsafe.com** (custom domain — see `public/CNAME`)
 
 > Read [PORTING-NOTES.md](PORTING-NOTES.md) before changing anything visual. It
 > records which oddities are faithful reproductions of the original and which
@@ -13,7 +13,7 @@ Deploys to **https://halliday2026.github.io/larson_website**
 
 ```sh
 npm install
-npm run dev          # http://localhost:4321/larson_website/
+npm run dev          # http://localhost:4321/
 ```
 
 | Command | What it does |
@@ -42,8 +42,12 @@ Pushing to `main` triggers `.github/workflows/deploy.yml`.
 **One-time setup:** in *Settings → Pages*, set **Source** to **GitHub Actions**.
 Without this the workflow succeeds but nothing is published.
 
-If you move to a custom domain, update `site` and `base` in `astro.config.mjs`
-(`base` becomes `'/'`) and add a `CNAME` file to `public/`.
+The site is served from **larsonsafe.com**, not `github.io/larson_website` —
+`public/CNAME` and `site`/`base` in `astro.config.mjs` must all agree on this.
+If the custom domain is ever removed from *Settings → Pages*, revert `base` to
+`/larson_website` and delete `public/CNAME`, or every asset URL will 404 (this
+exact mismatch is what broke the site's styling on 2026-09-19 — see
+PORTING-NOTES.md).
 
 ## How it's organised
 
