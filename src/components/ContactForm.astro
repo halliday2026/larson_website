@@ -2,70 +2,28 @@
 /*
   Replaces the Elementor Pro form widget (d272623), which POSTed to WordPress
   admin-ajax and cannot work on a static host. Field set, labels, required flags
-  and submit copy are unchanged; only the transport differs.
+  and submit copy are unchanged; only the transport differs — this posts to
+  Formspree instead (contact.formEndpoint in content.ts).
 
-  Endpoint comes from PUBLIC_FORM_ENDPOINT (see .env.example). When it is unset
-  the form renders disabled with a visible notice rather than silently failing.
+  A Formspree endpoint is not a secret (it's visible in the page source of any
+  site that uses one), so it's a plain constant, not an env var or CI secret.
 
   Field styling (Elementor "md" size): 16px, min-height 47px, 6px/16px padding,
   4px radius, background #FFFFFF08, border #B4B4B41F.
   Labels: 12px uppercase, 1px tracking, #BEBEBE, 9px bottom padding.
 */
-import { contact, site } from '../data/content';
-
-const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
-const configured = endpoint.length > 0;
-
-if (!configured) {
-  // Developer-facing; visitors get the phone/email fallback rendered below.
-  console.warn(
-    '[contact form] PUBLIC_FORM_ENDPOINT is not set — the form will render disabled. See PORTING-NOTES.md.'
-  );
-}
+import { contact } from '../data/content';
 
 const fieldClass =
-  'block w-full min-h-[47px] rounded-[4px] border border-[#B4B4B41F] bg-white/[0.03] px-[16px] py-[6px] font-roboto text-[16px] leading-[1.4] text-white transition-colors focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 disabled:cursor-not-allowed disabled:opacity-50';
+  'block w-full min-h-[47px] rounded-[4px] border border-[#B4B4B41F] bg-white/[0.03] px-[16px] py-[6px] font-roboto text-[16px] leading-[1.4] text-white transition-colors focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500';
 const labelClass =
   'block pb-[9px] font-sans text-[12px] font-normal uppercase leading-none tracking-[1px] text-[#BEBEBE]';
 ---
 
-<form
-  id="contact-form"
-  class="flex flex-col"
-  method="post"
-  action={endpoint}
-  novalidate={configured ? true : undefined}
-  data-configured={configured ? 'true' : 'false'}
->
-  {
-    !configured && (
-      <p
-        class="mb-[20px] rounded-[4px] border border-amber-500/40 bg-amber-500/10 px-[16px] py-[12px] font-sans text-[14px] leading-[22px] text-amber-500"
-        role="status"
-      >
-        This form isn’t accepting submissions yet. Please call{' '}
-        <a class="underline" href={site.phoneHref}>
-          {site.phone}
-        </a>{' '}
-        or email{' '}
-        <a class="underline" href={`mailto:${site.email}`}>
-          {site.email}
-        </a>
-        .
-      </p>
-    )
-  }
-
+<form id="contact-form" class="flex flex-col" method="post" action={contact.formEndpoint}>
   <div class="mb-[20px]">
     <label class={labelClass} for="form-field-name">Name</label>
-    <input
-      class={fieldClass}
-      type="text"
-      id="form-field-name"
-      name="name"
-      autocomplete="name"
-      disabled={!configured}
-    />
+    <input class={fieldClass} type="text" id="form-field-name" name="name" autocomplete="name" />
   </div>
 
   <div class="mb-[20px]">
@@ -77,7 +35,6 @@ const labelClass =
       name="email"
       autocomplete="email"
       required
-      disabled={!configured}
     />
   </div>
 
@@ -90,24 +47,17 @@ const labelClass =
       name="phone"
       autocomplete="tel"
       required
-      disabled={!configured}
     />
   </div>
 
   <div class="mb-[20px]">
     <label class={labelClass} for="form-field-message">Message</label>
-    <textarea
-      class={fieldClass}
-      id="form-field-message"
-      name="message"
-      rows="4"
-      disabled={!configured}></textarea>
+    <textarea class={fieldClass} id="form-field-message" name="message" rows="4"></textarea>
   </div>
 
   <button
     type="submit"
     class="min-h-[47px] w-full rounded-[4px] bg-orange-500 px-[30px] py-[15px] font-sans text-[12px] font-medium leading-none text-navy-800 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:text-[15px]"
-    disabled={!configured}
   >
     {contact.submitLabel}
   </button>
@@ -126,7 +76,7 @@ const labelClass =
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const status = document.getElementById('form-status');
 
-  if (form && status && form.dataset.configured === 'true') {
+  if (form && status) {
     const say = (message: string, ok: boolean) => {
       status.textContent = message;
       status.hidden = false;
@@ -137,7 +87,8 @@ const labelClass =
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      // novalidate is set so we control when the browser's messages appear.
+      // Native validity check — required fields still block submission even
+      // if this script fails to run at all (no novalidate on the <form>).
       if (!form.reportValidity()) return;
 
       const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement;
@@ -153,11 +104,16 @@ const labelClass =
           headers: { Accept: 'application/json' },
         });
 
-        if (!response.ok) throw new Error(String(response.status));
+        if (!response.ok) {
+          const body = await response.json().catch(() => null);
+          const detail = body?.errors?.map((e: { message: string }) => e.message).join(', ');
+          throw new Error(detail || String(response.status));
+        }
 
         form.reset();
         say('Thanks — your request has been sent. We’ll be in touch shortly.', true);
-      } catch {
+      } catch (err) {
+        console.error('[contact form]', err);
         say(
           'Sorry, that didn’t send. Please call (904) 517-2187 or email bill@larsonsafe.com.',
           false

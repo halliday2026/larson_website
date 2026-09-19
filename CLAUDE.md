@@ -65,9 +65,10 @@ npx astro check    # must stay at 0 errors
 ## Contact form
 
 Static host, so no server handler. `ContactForm.astro` POSTs to
-`PUBLIC_FORM_ENDPOINT` (a `.env` var locally, a repo Actions *variable* in CI).
-Unset → the form renders disabled with a phone/email fallback and the build logs
-a warning. Never make it fail silently.
+`contact.formEndpoint` (`src/data/content.ts`) — a plain constant, not an env
+var. A Formspree endpoint is not a secret (it's in the page's HTML source the
+moment the form renders), so don't reintroduce env-var/CI-variable indirection
+for it. To point at a different form, edit that one line.
 
 ## Deployment
 

@@ -13,7 +13,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables (none currently used, but keep any future ones out of git)
 .env
 .env.production
 

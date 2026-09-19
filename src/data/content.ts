@@ -167,6 +167,9 @@ export const contact = {
   title: 'Is your workplace ready for an OSHA inspection?',
   body: 'Most employers don’t know what they’re missing until an inspector arrives. Contact Larson Safety today for a free workplace assessment — get a clear picture of where you stand and what to fix first.',
   submitLabel: 'Request a Free Assessment Request',
+  // A Formspree form ID is not a secret — it's visible in every page's HTML
+  // source the moment the form renders. No env var needed; change it here.
+  formEndpoint: 'https://formspree.io/f/xyezzqgv',
 };
 
 export const footer = {

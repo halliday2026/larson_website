@@ -12,27 +12,30 @@ Everything below is a deliberate decision, not an oversight.
 
 GitHub Pages serves static files only. These could not come across as-is.
 
-### Contact form — needs configuration before it works
+### Contact form — now wired to Formspree
 
 The original used an **Elementor Pro form widget** that POSTed to WordPress
 `admin-ajax.php`. That handler does not exist on a static host.
 
 The replacement keeps the same fields, labels, required flags and submit copy,
-but posts to a third-party form service via `fetch()`:
+but posts to Formspree via `fetch()`. The endpoint is a plain constant —
+`contact.formEndpoint` in `src/data/content.ts`, currently
+`https://formspree.io/f/xyezzqgv` — not an environment variable. A Formspree
+form ID is not a secret: it's visible in the HTML source of any page that
+renders the form, so there's nothing to protect by hiding it in CI config.
+(An earlier revision of this port routed it through `PUBLIC_FORM_ENDPOINT` and
+a GitHub Actions repository variable, which added a manual setup step for no
+security benefit. That's been removed.)
 
-1. Create a form at [Formspree](https://formspree.io) (or Web3Forms, Basin, etc.).
-2. Set `PUBLIC_FORM_ENDPOINT` to the endpoint URL:
-   - **Local:** copy `.env.example` to `.env` and fill it in.
-   - **CI/Pages:** add it as a repository *variable* named `PUBLIC_FORM_ENDPOINT`
-     (Settings → Secrets and variables → Actions → Variables). The deploy
-     workflow already passes it through.
+To point the form at a different Formspree form, change that one line.
 
-**Until it is set, the form renders disabled** with a visible notice pointing
-visitors at the phone number and email address, and the build logs a warning.
-It fails loudly rather than silently swallowing enquiries.
+**Turn off reCAPTCHA** in Formspree's dashboard (Settings → Spam protection).
+This form submits via `fetch`, which sends no captcha token, so a form with
+reCAPTCHA enabled will reject every real submission — silently, from the
+visitor's point of view, since the JS shows a generic error either way.
 
-Note that submissions will go to your form provider, not to WordPress — nobody
-will find them in a WP dashboard.
+Submissions go to Formspree, not WordPress — nobody will find them in a WP
+dashboard, and they're subject to Formspree's plan limits (50/month on free).
 
 ### WordPress plumbing that was dropped
 

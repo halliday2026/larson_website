@@ -22,10 +22,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: withastro/action@v4
-        env:
-          # Set this as a repository variable (Settings > Secrets and variables >
-          # Actions > Variables) to enable contact form submissions.
-          PUBLIC_FORM_ENDPOINT: ${{ vars.PUBLIC_FORM_ENDPOINT }}
 
   deploy:
     needs: build

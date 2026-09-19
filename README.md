@@ -23,17 +23,17 @@ npm run dev          # http://localhost:4321/larson_website/
 | `npm run preview` | Serve `dist/` locally — use this for visual checks |
 | `npx astro check` | Type-check `.astro` files |
 
-## Before you deploy: the contact form
+## The contact form
 
-The form needs a third-party endpoint; a static host cannot process it. Until
-one is configured the form renders **disabled**, showing visitors the phone
-number and email instead.
+Posts to [Formspree](https://formspree.io) — a static host can't process a
+form itself. The endpoint is a plain constant in `src/data/content.ts`
+(`contact.formEndpoint`), not an environment variable: a Formspree form ID
+isn't a secret, it's visible in the page source of any site that uses one.
 
-1. Create a form at [Formspree](https://formspree.io) (or any service that
-   accepts a `POST` of `FormData` and returns JSON).
-2. Add `PUBLIC_FORM_ENDPOINT` as a repository **variable** under
-   *Settings → Secrets and variables → Actions → Variables*.
-3. For local development, copy `.env.example` to `.env` and set the same value.
+To point it at a different Formspree form, edit that one line. In Formspree's
+dashboard, turn **off reCAPTCHA** under Settings → Spam protection — this form
+submits via `fetch`, which doesn't send a captcha token, so leaving it on would
+make every real submission fail silently.
 
 ## Deployment
 
