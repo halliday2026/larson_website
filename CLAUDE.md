@@ -75,6 +75,14 @@ var. A Formspree endpoint is not a secret (it's in the page's HTML source the
 moment the form renders), so don't reintroduce env-var/CI-variable indirection
 for it. To point at a different form, edit that one line.
 
+## Analytics
+
+Plausible, wired in `Layout.astro`'s `<head>` — the site's own unique script
+URL (`pa-4uKfho-6k6CNpq0Y8iL0n.js`), copied verbatim from the Plausible
+dashboard. Both `<script>` tags use `is:inline` so Astro ships them exactly as
+given rather than bundling/transforming them; don't remove that directive.
+Cookieless, so no cookie-consent banner is needed for it.
+
 ## Deployment
 
 `.github/workflows/deploy.yml` builds and publishes on push to `main`.
