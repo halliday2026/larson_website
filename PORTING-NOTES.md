@@ -120,6 +120,13 @@ Small, low-risk fixes. Each is easy to revert.
   "Request a Free Assessment Request" — "Request" duplicated, once as the
   lead verb and once trailing. Now "Request a Free Assessment"
   (`contact.submitLabel` in `content.ts`).
+- **Footer "Industries" column: "Construction" removed.** Larson Safety
+  doesn't serve the construction industry (not listed anywhere else on the
+  page — General Industry, Manufacturing, Hospitality, Building Services are);
+  the original's footer listed it anyway. `footer.columns` in `content.ts`.
+- **"boat manufacturing" capitalized** to "Boat manufacturing" for consistency
+  with the other list items in that column (Printing, Truck/auto upfitting and
+  repair). `industries.manufacturing.columns` in `content.ts`.
 
 ## 4. Quirks of the original, reproduced on purpose
 

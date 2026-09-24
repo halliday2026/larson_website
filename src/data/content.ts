@@ -113,7 +113,7 @@ export const industries = {
     title: 'Manufacturing expertise',
     columns: [
       ['Metal', 'Plastics', 'Packaging'],
-      ['Printing', 'Truck/auto upfitting and repair', 'boat manufacturing'],
+      ['Printing', 'Truck/auto upfitting and repair', 'Boat manufacturing'],
     ],
   },
 };
@@ -190,7 +190,6 @@ export const footer = {
       title: 'Industries',
       items: [
         { label: 'Manufacturing', href: '#industries' },
-        { label: 'Construction', href: '#industries' },
         { label: 'Hospitality', href: '#industries' },
         { label: 'Building Services', href: '#industries' },
       ],
