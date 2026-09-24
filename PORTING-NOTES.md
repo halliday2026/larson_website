@@ -116,6 +116,10 @@ Small, low-risk fixes. Each is easy to revert.
 - **Self-hosted fonts.** Inter, Inter Tight and Roboto load from the site itself
   rather than the Google Fonts CDN — faster, and no third-party request.
 - **Images are optimised** to WebP with responsive `srcset` via `astro:assets`.
+- **Contact form submit button text fixed.** The original's button read
+  "Request a Free Assessment Request" — "Request" duplicated, once as the
+  lead verb and once trailing. Now "Request a Free Assessment"
+  (`contact.submitLabel` in `content.ts`).
 
 ## 4. Quirks of the original, reproduced on purpose
 
