@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free, No-Obligation Program Self-Assessment | Larson Safety, LLC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF0EC;
+    --surface:#FFFFFF;
+    --ink:#1B262C;
+    --ink-soft:#4A5A62;
+    --ink-faint:#7C8A90;
+    --line:#D7DBD4;
+    --accent:#E1621A;
+    --accent-ink:#8C3C0F;
+    --accent-tint:#F7E3D3;
+    --low:#3F7A52;
+    --low-tint:#E4EFE4;
+    --mod:#C07C1F;
+    --mod-tint:#F6EAD4;
+    --high:#B23A2E;
+    --high-tint:#F5DFDB;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Public Sans', system-ui, sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Archivo', system-ui, sans-serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px 96px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- Header / masthead ---------- */
+  .masthead{
+    background:var(--ink);
+    color:#fff;
+    padding:36px 0 40px;
+    border-bottom:5px solid var(--accent);
+  }
+  .masthead .wrap{padding-bottom:0;}
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .brand-mark{
+    width:13px;height:13px;
+    background:var(--accent);
+    flex:none;
+    transform:rotate(45deg);
+  }
+  .brand-name{
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.02em;
+    color:#fff;
+  }
+  .brand-sub{
+    font-size:12.5px;
+    color:#AEB9BD;
+  }
+  .masthead h1{
+    font-size:clamp(26px,4vw,34px);
+    color:#fff;
+    max-width:14ch;
+    line-height:1.12;
+  }
+  .masthead p{
+    color:#C7D0D2;
+    font-size:15.5px;
+    max-width:52ch;
+    margin-top:14px;
+  }
+
+  /* ---------- Intro / scope card ---------- */
+  .scope{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-top:-28px;
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+  }
+  .scope-item{
+    padding:4px 16px;
+    border-left:1px solid var(--line);
+    text-align:left;
+  }
+  .scope-item:first-child{border-left:none;padding-left:0;}
+  .scope-num{
+    font-family:'Archivo',sans-serif;
+    font-weight:800;
+    font-size:20px;
+    color:var(--accent-ink);
+  }
+  .scope-label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  @media (max-width:640px){
+    .scope{grid-template-columns:1fr 1fr;row-gap:16px;}
+    .scope-item:nth-child(3){border-left:none;}
+  }
+
+  .start-block{
+    text-align:left;
+    margin-top:36px;
+  }
+  .start-block p{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:56ch;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    font-family:'Public Sans',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    border:none;
+    border-radius:var(--radius);
+    padding:13px 26px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:#fff;
+  }
+  .btn-primary:hover{background:var(--accent-ink);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--ink-faint);}
+  .btn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+
+  /* ---------- Assessment section ---------- */
+  #assessment{display:none;padding-top:36px;}
+  .progress-rail{
+    display:flex;
+    gap:5px;
+    margin-bottom:10px;
+  }
+  .progress-seg{
+    flex:1;
+    height:5px;
+    background:var(--line);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .progress-seg > span{
+    display:block;
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    transition:width .25s ease;
+  }
+  .progress-meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    margin-bottom:30px;
+  }
+
+  .category-tag{
+    display:inline-block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--accent-ink);
+    background:var(--accent-tint);
+    padding:4px 10px;
+    border-radius:2px;
+    margin-bottom:14px;
+  }
+  .q-index{
+    font-size:13px;
+    color:var(--ink-faint);
+    margin-bottom:6px;
+  }
+  .q-text{
+    font-size:21px;
+    font-family:'Archivo',sans-serif;
+    font-weight:600;
+    line-height:1.3;
+    margin-bottom:6px;
+    max-width:34ch;
+  }
+  .q-help{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+    max-width:50ch;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:30px;
+  }
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:15px 16px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    cursor:pointer;
+    text-align:left;
+  }
+  .option:hover{border-color:var(--ink-faint);}
+  .option.selected{
+    border-color:var(--accent);
+    background:var(--accent-tint);
+  }
+  .option .dot{
+    width:16px;height:16px;
+    border-radius:50%;
+    border:1.5px solid var(--ink-faint);
+    flex:none;
+    margin-top:2px;
+    position:relative;
+  }
+  .option.selected .dot{border-color:var(--accent-ink);}
+  .option.selected .dot::after{
+    content:"";
+    position:absolute;
+    inset:3px;
+    background:var(--accent-ink);
+    border-radius:50%;
+  }
+  .option-label{font-size:15.5px;font-weight:600;}
+  .option-sub{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  /* ---------- Results ---------- */
+  #results{display:none;padding-top:36px;}
+  .results-head{margin-bottom:28px;}
+  .results-head .eyebrow{
+    font-size:13px;
+    color:var(--ink-faint);
+    margin-bottom:6px;
+  }
+  .results-head h2{font-size:28px;}
+
+  .overall-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px;
+    display:flex;
+    gap:28px;
+    align-items:center;
+    margin-bottom:22px;
+  }
+  .gauge-wrap{flex:none;}
+  .overall-copy{flex:1;min-width:0;}
+  .risk-band{
+    display:inline-block;
+    font-family:'Archivo',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    padding:3px 0;
+  }
+  .overall-copy p{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+
+  .cat-results{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-bottom:30px;
+  }
+  .cat-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .cat-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:10px;
+    gap:12px;
+  }
+  .cat-name{font-weight:600;font-size:15px;}
+  .cat-score{font-size:13px;color:var(--ink-soft);flex:none;}
+  .cat-bar{
+    height:7px;
+    background:var(--bg);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .cat-bar > span{display:block;height:100%;border-radius:4px;}
+
+  .gaps-block h3{
+    font-size:18px;
+    margin-bottom:14px;
+  }
+  .gap-item{
+    display:flex;
+    gap:12px;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+  }
+  .gap-item:last-child{border-bottom:1px solid var(--line);}
+  .gap-flag{
+    flex:none;
+    width:8px;height:8px;
+    border-radius:50%;
+    margin-top:7px;
+  }
+  .gap-text{font-size:14.5px;color:var(--ink-soft);}
+  .gap-text strong{color:var(--ink);font-weight:600;}
+  .no-gaps{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:16px 0;
+  }
+
+  .cta-card{
+    background:var(--ink);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:32px 28px;
+    margin-top:34px;
+  }
+  .cta-card h3{
+    color:#fff;
+    font-size:22px;
+    max-width:26ch;
+    margin-bottom:10px;
+  }
+  .cta-card p{
+    color:#C7D0D2;
+    font-size:14.5px;
+    max-width:50ch;
+    margin-bottom:20px;
+  }
+  .cta-actions{display:flex;flex-wrap:wrap;gap:12px;}
+  .cta-actions a.btn-primary{text-decoration:none;}
+  .cta-note{
+    font-size:12.5px;
+    color:#8E9CA1;
+    margin-top:18px;
+  }
+
+  .restart-row{
+    text-align:center;
+    margin-top:26px;
+  }
+  .restart-row button{
+    background:none;
+    border:none;
+    color:var(--ink-faint);
+    font-size:13px;
+    text-decoration:underline;
+    cursor:pointer;
+  }
+
+  footer{
+    text-align:center;
+    padding:30px 24px 10px;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+
+  @media print{
+    .masthead, .scope, .start-block, .cta-card, .restart-row, footer{display:none !important;}
+    #results{display:block !important;padding-top:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">LARSON SAFETY, LLC</span>
+    </div>
+    <h1>How would your programs hold up under an audit tomorrow?</h1>
+    <p>Curious how your safety, environmental, and risk programs are actually performing? This free, no-obligation self-assessment gives you an honest read on their maturity — 20 questions across the areas most often tested by an OSHA or EPA inspector, or your insurance carrier.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="scope">
+    <div class="scope-item">
+      <div class="scope-num">01</div>
+      <div class="scope-label">Occupational Safety &amp; Health</div>
+    </div>
+    <div class="scope-item">
+      <div class="scope-num">02</div>
+      <div class="scope-label">Environmental Management</div>
+    </div>
+    <div class="scope-item">
+      <div class="scope-num">03</div>
+      <div class="scope-label">Insurance &amp; Loss Control</div>
+    </div>
+    <div class="scope-item">
+      <div class="scope-num">04</div>
+      <div class="scope-label">Regulatory &amp; Agency Readiness</div>
+    </div>
+  </div>
+
+  <div class="start-block" id="intro">
+    <p>Answer honestly — this isn't an audit, and no one from Larson Safety sees your responses. It's a quick way to assess for yourself the basic maturity and capability of your programs, and where a small fix now could prevent a costly surprise later. Takes about 5 minutes. Your answers stay in your browser; nothing is sent anywhere unless you choose to share your results at the end.</p>
+    <button class="btn btn-primary" onclick="startAssessment()">Assess my programs — free, no obligation</button>
+  </div>
+
+  <div id="assessment">
+    <div class="progress-rail" id="progressRail"></div>
+    <div class="progress-meta">
+      <span id="progressLabel">Question 1 of 20</span>
+      <span id="progressPct">5%</span>
+    </div>
+
+    <div class="category-tag" id="catTag">Occupational Safety &amp; Health</div>
+    <div class="q-index" id="qIndex"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="q-help" id="qHelp"></div>
+    <div class="options" id="qOptions"></div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="backBtn" onclick="goBack()">Back</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>Next</button>
+    </div>
+  </div>
+
+  <div id="results">
+    <div class="results-head">
+      <div class="eyebrow">YOUR RESULTS</div>
+      <h2>Here's where your operation stands.</h2>
+    </div>
+
+    <div class="overall-card">
+      <div class="gauge-wrap" id="gaugeWrap"></div>
+      <div class="overall-copy">
+        <div class="risk-band" id="riskBand"></div>
+        <p id="riskSummary"></p>
+      </div>
+    </div>
+
+    <div class="cat-results" id="catResults"></div>
+
+    <div class="gaps-block">
+      <h3>Specific items worth a closer look</h3>
+      <div id="gapsList"></div>
+    </div>
+
+    <div class="cta-card">
+      <h3>That's your score — no strings attached.</h3>
+      <p>You're free to stop here. If you'd like a second set of eyes on what it means or how to close a gap, a Certified Safety Professional can walk through it with you, in plain terms and in priority order — no pitch, no pressure.</p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="mailto:bill@larsonsafe.com?subject=Risk%20Assessment%20Follow-up" id="ctaEmail">Send my results to a consultant</a>
+        <button class="btn btn-ghost" style="background:transparent;color:#fff;border-color:#465257;" onclick="window.print()">Print / save as PDF</button>
+      </div>
+      <div class="cta-note">Contact us: <a href="mailto:bill@larsonsafe.com" style="color:#C7D0D2;">bill@larsonsafe.com</a> or by phone <a href="tel:+19045172187" style="color:#C7D0D2;">904-517-2187</a></div>
+    </div>
+
+    <div class="restart-row">
+      <button onclick="restartAssessment()">Start over</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; <span id="year"></span> Larson Safety, LLC. This self-assessment is an educational screening tool and does not constitute a compliance audit, legal advice, or a guarantee of regulatory or insurance outcomes.
+  </footer>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// ---------- Question bank ----------
+// score: 2 = strong practice, 1 = partial, 0 = gap / unsure
+const categories = [
+  {
+    key: 'osha',
+    name: 'Occupational Safety & Health',
+    color: '#3F7A52',
+    questions: [
+      {
+        text: 'Do you have written safety programs for your top hazards?',
+        help: 'E.g. Hazard Communication, Lockout/Tagout, Respiratory Protection — whatever applies to your operations.',
+        options: [
+          {label:'Yes, written and current', sub:'Reviewed in the last 12 months', score:2},
+          {label:'Some exist, but outdated or incomplete', score:1},
+          {label:'No written programs, or not sure', score:0}
+        ]
+      },
+      {
+        text: 'How is new-hire and refresher safety training tracked?',
+        help: '',
+        options: [
+          {label:'Documented training records for every employee', score:2},
+          {label:'Training happens, but records are inconsistent', score:1},
+          {label:'Mostly informal, on-the-job only', score:0}
+        ]
+      },
+      {
+        text: 'Is machine guarding and lockout/tagout enforced on the floor?',
+        help: 'Applies to any equipment with moving parts, pinch points, or stored energy.',
+        options: [
+          {label:'Guards in place and LOTO followed every time', score:2},
+          {label:'Mostly, with occasional shortcuts', score:1},
+          {label:'Inconsistent, or not applicable and unverified', score:0}
+        ]
+      },
+      {
+        text: 'How are near-misses and minor injuries handled?',
+        help: '',
+        options: [
+          {label:'Reported, investigated, and used to fix root causes', score:2},
+          {label:'Reported sometimes, rarely investigated', score:1},
+          {label:'Usually not reported unless serious', score:0}
+        ]
+      },
+      {
+        text: 'Do employees have and consistently use the right PPE?',
+        help: '',
+        options: [
+          {label:'PPE assessed by task and consistently worn', score:2},
+          {label:'PPE available, but use is inconsistent', score:1},
+          {label:'No formal PPE assessment', score:0}
+        ]
+      },
+      {
+        text: 'Does your Hazard Communication program meet the OSHA standard?',
+        help: 'A current written HazCom program, GHS-compliant container labels, an accessible Safety Data Sheet library, and employee training on the chemicals they actually work with (29 CFR 1910.1200).',
+        options: [
+          {label:'Yes — written program, labels, SDS access, and training all current', score:2},
+          {label:'Mostly in place, with a gap in one area (e.g. labeling or SDS access)', score:1},
+          {label:'No formal program, or not sure', score:0}
+        ]
+      }
+    ]
+  },
+  {
+    key: 'env',
+    name: 'Environmental Management',
+    color: '#3F7A52',
+    questions: [
+      {
+        text: 'Do you know which environmental permits or plans apply to you?',
+        help: 'Stormwater (NPDES), air permits, SPCC plans, hazardous waste generator status, etc.',
+        options: [
+          {label:'Yes, identified and current', score:2},
+          {label:'Aware of some, not confident it\u2019s complete', score:1},
+          {label:'Not sure what applies to us', score:0}
+        ]
+      },
+      {
+        text: 'How is hazardous or regulated waste stored and disposed of?',
+        help: 'Used oil, solvents, paint waste, batteries, etc.',
+        options: [
+          {label:'Labeled, contained, and manifested through a licensed hauler', score:2},
+          {label:'Generally handled correctly, no formal system', score:1},
+          {label:'Inconsistent, or not tracked closely', score:0}
+        ]
+      },
+      {
+        text: 'Do you have a written spill response plan for chemicals or fuel on site?',
+        help: '',
+        options: [
+          {label:'Yes, with spill kits staged and staff trained', score:2},
+          {label:'Some materials on hand, no formal plan', score:1},
+          {label:'No plan in place', score:0}
+        ]
+      },
+      {
+        text: 'Is stormwater runoff from your site managed to avoid discharge violations?',
+        help: 'Outdoor storage, loading areas, washdown water, etc.',
+        options: [
+          {label:'Yes, actively managed and inspected', score:2},
+          {label:'Somewhat, not formally inspected', score:1},
+          {label:'Not something we\u2019ve assessed', score:0}
+        ]
+      }
+    ]
+  },
+  {
+    key: 'ins',
+    name: 'Insurance & Loss Control',
+    color: '#3F7A52',
+    questions: [
+      {
+        text: 'Do you know your current Experience Modification Rate (EMR)?',
+        help: 'And whether it has trended up or down over the past 3 years.',
+        options: [
+          {label:'Yes, and we actively work to improve it', score:2},
+          {label:'We know the number, don\u2019t actively manage it', score:1},
+          {label:'Not sure what our EMR is', score:0}
+        ]
+      },
+      {
+        text: 'How do you respond to your insurance carrier\u2019s loss control recommendations?',
+        help: '',
+        options: [
+          {label:'Addressed and closed out with documentation', score:2},
+          {label:'Some addressed, others sit open', score:1},
+          {label:'Rarely acted on, or none received/reviewed', score:0}
+        ]
+      },
+      {
+        text: 'Are subcontractors or vendors required to carry proof of insurance and indemnify you?',
+        help: 'Certificates of insurance, additional insured status, hold-harmless language.',
+        options: [
+          {label:'Always collected and verified before work starts', score:2},
+          {label:'Usually, but not consistently tracked', score:1},
+          {label:'Not formally required', score:0}
+        ]
+      },
+      {
+        text: 'How would you describe your workers\u2019 comp claims trend over the last few years?',
+        help: '',
+        options: [
+          {label:'Low frequency, and we analyze what causes claims', score:2},
+          {label:'A few claims, no formal review process', score:1},
+          {label:'Frequent claims, or we don\u2019t track trends', score:0}
+        ]
+      }
+    ]
+  },
+  {
+    key: 'reg',
+    name: 'Regulatory & Agency Readiness',
+    color: '#3F7A52',
+    questions: [
+      {
+        text: 'Is your OSHA 300 Log (injury and illness log) current and accurate?',
+        help: '',
+        options: [
+          {label:'Yes, maintained year-round and posted when required', score:2},
+          {label:'Exists, but updated inconsistently', score:1},
+          {label:'Not maintained, or not sure what this is', score:0}
+        ]
+      },
+      {
+        text: 'If an OSHA or EPA inspector showed up today, how prepared would you be?',
+        help: '',
+        options: [
+          {label:'Documentation organized and a clear response plan', score:2},
+          {label:'We\u2019d manage, but scrambling to pull records', score:1},
+          {label:'Not prepared at all', score:0}
+        ]
+      },
+      {
+        text: 'Have you had any citations, violations, or notices of concern in the past 3 years?',
+        help: 'From OSHA, EPA, local fire marshal, or your insurance carrier.',
+        options: [
+          {label:'None, and we track our standing proactively', score:2},
+          {label:'One or two, resolved', score:1},
+          {label:'Yes, and some remain unresolved or recurring', score:0}
+        ]
+      },
+      {
+        text: 'Who owns safety and compliance responsibility in your company?',
+        help: '',
+        options: [
+          {label:'A designated person or team with real time budgeted for it', score:2},
+          {label:'Someone handles it as an add-on to another role', score:1},
+          {label:'No one is clearly responsible', score:0}
+        ]
+      },
+      {
+        text: 'Do you have a system for tracking regulatory deadlines and renewals?',
+        help: 'Permit renewals, required reports, recertifications, inspection cycles.',
+        options: [
+          {label:'Yes, tracked on a calendar with owners assigned', score:2},
+          {label:'Informally tracked, occasionally missed', score:1},
+          {label:'No tracking system', score:0}
+        ]
+      },
+      {
+        text: 'How confident are you that recordkeeping would hold up under agency review?',
+        help: 'Training logs, inspection records, SDS access, permits.',
+        options: [
+          {label:'Very confident, records are organized and accessible', score:2},
+          {label:'Somewhat, records exist but are scattered', score:1},
+          {label:'Not confident', score:0}
+        ]
+      }
+    ]
+  }
+];
+
+// Flatten into a single ordered list, tagging category info
+const allQuestions = [];
+categories.forEach(cat => {
+  cat.questions.forEach(q => {
+    allQuestions.push({...q, catKey: cat.key, catName: cat.name});
+  });
+});
+
+let current = 0;
+const answers = new Array(allQuestions.length).fill(null);
+
+function buildProgressRail(){
+  const rail = document.getElementById('progressRail');
+  rail.innerHTML = '';
+  allQuestions.forEach(() => {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg';
+    seg.innerHTML = '<span></span>';
+    rail.appendChild(seg);
+  });
+}
+
+function startAssessment(){
+  document.getElementById('intro').style.display = 'none';
+  document.querySelector('.scope').style.display = 'none';
+  document.getElementById('assessment').style.display = 'block';
+  buildProgressRail();
+  renderQuestion();
+  document.getElementById('assessment').scrollIntoView({behavior:'smooth'});
+}
+
+function renderQuestion(){
+  const q = allQuestions[current];
+  document.getElementById('catTag').textContent = q.catName;
+  document.getElementById('qIndex').textContent = 'ITEM ' + (current+1) + ' OF ' + allQuestions.length;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('qHelp').textContent = q.help || '';
+  document.getElementById('qHelp').style.display = q.help ? 'block' : 'none';
+
+  const optWrap = document.getElementById('qOptions');
+  optWrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const el = document.createElement('div');
+    el.className = 'option' + (answers[current] === i ? ' selected' : '');
+    el.setAttribute('role','button');
+    el.setAttribute('tabindex','0');
+    el.innerHTML = '<span class="dot"></span><span><span class="option-label">' + opt.label + '</span>' +
+      (opt.sub ? '<div class="option-sub">' + opt.sub + '</div>' : '') + '</span>';
+    el.onclick = () => selectOption(i);
+    el.onkeydown = (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); selectOption(i);} };
+    optWrap.appendChild(el);
+  });
+
+  document.getElementById('backBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').disabled = answers[current] === null;
+  document.getElementById('nextBtn').textContent = current === allQuestions.length - 1 ? 'See my results' : 'Next';
+
+  updateProgress();
+}
+
+function selectOption(i){
+  answers[current] = i;
+  renderQuestion();
+}
+
+function updateProgress(){
+  const segs = document.querySelectorAll('.progress-seg > span');
+  segs.forEach((s, i) => { s.style.width = i <= current ? '100%' : '0%'; });
+  document.getElementById('progressLabel').textContent = 'Question ' + (current+1) + ' of ' + allQuestions.length;
+  document.getElementById('progressPct').textContent = Math.round(((current) / allQuestions.length) * 100) + '%';
+}
+
+function goNext(){
+  if(answers[current] === null) return;
+  if(current < allQuestions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function goBack(){
+  if(current > 0){
+    current--;
+    renderQuestion();
+  }
+}
+
+function bandFor(pct){
+  if(pct >= 80) return {label:'Low Exposure', color:'var(--low)', tint:'var(--low-tint)', hex:'#3F7A52'};
+  if(pct >= 55) return {label:'Moderate Exposure', color:'var(--mod)', tint:'var(--mod-tint)', hex:'#C07C1F'};
+  return {label:'High Exposure', color:'var(--high)', tint:'var(--high-tint)', hex:'#B23A2E'};
+}
+
+function drawGauge(pct, hex){
+  const size = 128, stroke = 12, r = (size - stroke) / 2;
+  const circumference = Math.PI * r; // half circle
+  const offset = circumference * (1 - pct / 100);
+  return '<svg width="'+size+'" height="'+(size/2 + 20)+'" viewBox="0 0 '+size+' '+(size/2+20)+'">' +
+    '<path d="M '+stroke/2+' '+(size/2)+' A '+r+' '+r+' 0 0 1 '+(size-stroke/2)+' '+(size/2)+'" fill="none" stroke="#E3E6DF" stroke-width="'+stroke+'" stroke-linecap="round"/>' +
+    '<path d="M '+stroke/2+' '+(size/2)+' A '+r+' '+r+' 0 0 1 '+(size-stroke/2)+' '+(size/2)+'" fill="none" stroke="'+hex+'" stroke-width="'+stroke+'" stroke-linecap="round" stroke-dasharray="'+circumference+'" stroke-dashoffset="'+offset+'"/>' +
+    '<text x="'+size/2+'" y="'+(size/2 - 6)+'" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="800" font-size="26" fill="#1B262C">'+pct+'%</text>' +
+    '<text x="'+size/2+'" y="'+(size/2 + 14)+'" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="11" fill="#7C8A90">SCORE</text>' +
+    '</svg>';
+}
+
+function showResults(){
+  document.getElementById('assessment').style.display = 'none';
+  const results = document.getElementById('results');
+  results.style.display = 'block';
+
+  // overall score
+  let totalScore = 0, totalMax = 0;
+  const catScores = {};
+  categories.forEach(cat => { catScores[cat.key] = {score:0, max:0, name:cat.name}; });
+
+  allQuestions.forEach((q, i) => {
+    const chosen = answers[i];
+    const pts = q.options[chosen].score;
+    const max = 2;
+    totalScore += pts; totalMax += max;
+    catScores[q.catKey].score += pts;
+    catScores[q.catKey].max += max;
+  });
+
+  const overallPct = Math.round((totalScore / totalMax) * 100);
+  const band = bandFor(overallPct);
+
+  document.getElementById('gaugeWrap').innerHTML = drawGauge(overallPct, band.hex);
+  const riskBandEl = document.getElementById('riskBand');
+  riskBandEl.textContent = band.label;
+  riskBandEl.style.color = band.hex;
+
+  const summaries = {
+    'Low Exposure': 'Your fundamentals are in solid shape. The items below are worth tightening so a small gap doesn\u2019t become a bigger one.',
+    'Moderate Exposure': 'You have real practices in place, but enough gaps that an inspector, adjuster, or incident could expose them. Worth a closer look.',
+    'High Exposure': 'Several core protections are missing or unverified. This is the range where a citation, claim, or coverage problem is most likely to surprise you.'
+  };
+  document.getElementById('riskSummary').textContent = summaries[band.label];
+
+  // category breakdown
+  const catWrap = document.getElementById('catResults');
+  catWrap.innerHTML = '';
+  categories.forEach(cat => {
+    const cs = catScores[cat.key];
+    const pct = Math.round((cs.score / cs.max) * 100);
+    const cband = bandFor(pct);
+    const card = document.createElement('div');
+    card.className = 'cat-card';
+    card.innerHTML =
+      '<div class="cat-row"><span class="cat-name">' + cat.name + '</span>' +
+      '<span class="cat-score" style="color:'+cband.hex+'">' + cband.label + '</span></div>' +
+      '<div class="cat-bar"><span style="width:'+pct+'%; background:'+cband.hex+'"></span></div>';
+    catWrap.appendChild(card);
+  });
+
+  // gaps: any answer scoring 0 or 1
+  const gapsWrap = document.getElementById('gapsList');
+  gapsWrap.innerHTML = '';
+  const gaps = [];
+  allQuestions.forEach((q, i) => {
+    const chosen = answers[i];
+    if(q.options[chosen].score < 2){
+      gaps.push({text:q.text, cat:q.catName, severity:q.options[chosen].score});
+    }
+  });
+
+  if(gaps.length === 0){
+    gapsWrap.innerHTML = '<div class="no-gaps">No flagged items \u2014 every response reflected a strong, documented practice. Keep it up, and revisit this assessment periodically as your operation changes.</div>';
+  } else {
+    gaps.sort((a,b) => a.severity - b.severity);
+    gaps.forEach(g => {
+      const dotColor = g.severity === 0 ? '#B23A2E' : '#C07C1F';
+      const row = document.createElement('div');
+      row.className = 'gap-item';
+      row.innerHTML = '<span class="gap-flag" style="background:'+dotColor+'"></span>' +
+        '<span class="gap-text"><strong>' + g.cat + ':</strong> ' + g.text + '</span>';
+      gapsWrap.appendChild(row);
+    });
+  }
+
+  // pre-fill email body with a summary
+  const bodyLines = [
+    'My Larson Safety, LLC self-assessment results:',
+    'Overall: ' + band.label + ' (' + overallPct + '%)',
+    ...categories.map(cat => {
+      const cs = catScores[cat.key];
+      const pct = Math.round((cs.score/cs.max)*100);
+      return cat.name + ': ' + pct + '%';
+    }),
+    '',
+    'I\'d like to talk through these results.'
+  ];
+  const mailBody = encodeURIComponent(bodyLines.join('\n'));
+  document.getElementById('ctaEmail').href = 'mailto:bill@larsonsafe.com?subject=Risk%20Assessment%20Follow-up&body=' + mailBody;
+
+  results.scrollIntoView({behavior:'smooth'});
+}
+
+function restartAssessment(){
+  current = 0;
+  answers.fill(null);
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('intro').style.display = 'block';
+  document.querySelector('.scope').style.display = 'grid';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>

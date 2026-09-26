@@ -58,6 +58,16 @@ came from getting this backwards.
   they are the original's real numbers. Prefer them over approximating with
   scale steps.
 
+## Standalone HTML pages (not part of the Astro build)
+
+`public/assessment/larson-safety-risk-assessment.html` is a hand-built,
+self-contained HTML/CSS/JS page (its own fonts, no Astro/Tailwind) — a lead
+magnet linked from the homepage (`SelfAssessment.astro`), not compiled by
+Astro at all. **Anything placed outside `public/` or `src/pages/` is silently
+excluded from `dist/` and 404s once deployed** — confirmed by testing during
+this file's addition, and the same class of mistake as the base-path incident
+above. If you add another page like this, it must live under `public/`.
+
 ## Commands
 
 ```sh

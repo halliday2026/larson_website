@@ -59,6 +59,29 @@ export const stats = [
   { value: 'OSHA/EPA', label: 'Regulatory Compliance' },
 ];
 
+// The interactive quiz at public/assessment/larson-safety-risk-assessment.html —
+// a separate static page, not part of the Astro build. Distinct from
+// hero.primaryCta ("Request a Free Workplace Assessment"), which is a
+// consultant-led, on-site assessment requested via the contact form; this is
+// a free, instant, self-serve score the visitor can take right now.
+export const selfAssessment = {
+  eyebrow: 'Free Self-Assessment',
+  title: 'How would your programs hold up under an audit tomorrow?',
+  body: 'Get an instant, private read on your safety, environmental, and risk programs — 20 quick questions across the areas most often tested by an OSHA or EPA inspector, or your insurance carrier. Nothing is shared with us unless you choose to send us your results.',
+  categories: [
+    'Occupational Safety & Health',
+    'Environmental Management',
+    'Insurance & Loss Control',
+    'Regulatory & Agency Readiness',
+  ],
+  facts: [
+    { value: '20', label: 'Questions' },
+    { value: '5 min', label: 'To complete' },
+    { value: 'Free', label: 'No obligation' },
+  ],
+  cta: { label: 'Start the Free Assessment', href: '/assessment/larson-safety-risk-assessment.html' },
+};
+
 export const services = {
   eyebrow: 'What We Do',
   title: 'Practical safety and environmental management built to last',
