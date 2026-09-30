@@ -5,6 +5,7 @@ import Hero from '../components/Hero.astro';
 import StatsBar from '../components/StatsBar.astro';
 import SelfAssessment from '../components/SelfAssessment.astro';
 import Services from '../components/Services.astro';
+import HowWeWork from '../components/HowWeWork.astro';
 import Industries from '../components/Industries.astro';
 import WhyUs from '../components/WhyUs.astro';
 import Faq from '../components/Faq.astro';
@@ -12,10 +13,13 @@ import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 
 /*
-  Section order matches the original page. The Elementor "How We Work" container
-  (e11ea42) is intentionally absent — it carries elementor-hidden-desktop,
-  -tablet and -mobile on the live site, so it renders nowhere. Its content is
-  preserved in PORTING-NOTES.md.
+  Section order matches the original page, with two additions not present in
+  the WordPress source: SelfAssessment and HowWeWork.
+
+  HowWeWork revives the Elementor "How We Work" container (e11ea42), which
+  carried elementor-hidden-desktop/-tablet/-mobile on the live WordPress site
+  and so never rendered there — see PORTING-NOTES.md. It's live here per
+  client request (2026-09-29).
 */
 ---
 
@@ -26,6 +30,7 @@ import Footer from '../components/Footer.astro';
     <StatsBar />
     <SelfAssessment />
     <Services />
+    <HowWeWork />
     <Industries />
     <WhyUs />
     <Faq />

@@ -38,6 +38,7 @@ export const site = {
 
 export const nav = [
   { label: 'Home', href: '#top' },
+  { label: 'Free Assessment', href: '#assessment' },
   { label: 'Services', href: '#services' },
   { label: 'Industries', href: '#industries' },
   { label: 'About', href: '#about' },
@@ -47,7 +48,11 @@ export const nav = [
 export const hero = {
   eyebrow: 'Occupational Safety, Environmental & Regulatory Compliance.',
   title: 'Trusted Safety & Environmental Compliance Consulting for NE Florida',
-  body: 'Larson Safety offers practical Safety and Solutions for small/mid sized Industrial/Manufacturing Businesses. We help clients meet and exceed regulatory requirements, reduce injury risk, and build sustainable risk management and compliance programs – without the cost of full-time safety staff.',
+  // Leads with direct self-recognition ("no safety department? that's who
+  // we work with") rather than burying it at the end of the paragraph —
+  // per client direction, proactive/due-diligence framing only, no
+  // incident/urgency language.
+  body: 'No in-house safety department? That’s exactly who we work with. Larson Safety helps small and mid-sized Industrial/Manufacturing businesses meet and exceed regulatory requirements, reduce injury risk, and build sustainable risk management and compliance programs – without the cost of full-time safety staff.',
   primaryCta: { label: 'Request a Free Workplace Assessment', href: '#cta' },
   secondaryCta: { label: 'View Our Services', href: '#services' },
 };
@@ -120,6 +125,40 @@ export const services = {
   ],
 };
 
+// Revived per PORTING-NOTES.md, section "The hidden 'How We Work' section" —
+// present in the original WordPress source but hidden on every breakpoint
+// there, so it never rendered on the live site. Copy is the exact content
+// preserved in that file; no incident/urgency language added (checked
+// against the client's 2026-09-29 correction — none of this was
+// crisis-framed to begin with).
+export const howWeWork = {
+  eyebrow: 'How We Work',
+  title: 'From first walkthrough to lasting compliance',
+  body: 'A straightforward, four-step engagement — so you always know where you stand and what happens next.',
+  steps: [
+    {
+      number: '01',
+      title: 'Free Workplace Assessment',
+      body: 'We walk your facility, review your current programs and documentation, and identify the gaps an OSHA inspector would find — before they do.',
+    },
+    {
+      number: '02',
+      title: 'Prioritized Action Plan',
+      body: 'You receive a clear, plain-language report ranked by risk and regulatory exposure — what to fix first, what it takes, and what it protects.',
+    },
+    {
+      number: '03',
+      title: 'Program Build-Out',
+      body: 'We write and implement the programs, training, and recordkeeping systems your operation needs — tailored to your industry, not templated.',
+    },
+    {
+      number: '04',
+      title: 'Ongoing Support',
+      body: 'Fractional safety leadership, audit follow-ups, and real-time access to your compliance records through the LSS hosted EHS platform.',
+    },
+  ],
+};
+
 export const industries = {
   eyebrow: 'INDUSTRIES WE SERVE',
   title: 'Industries we serve',
@@ -141,23 +180,31 @@ export const industries = {
   },
 };
 
+// Strengthened per client direction (2026-09-29) to overcome a first-time
+// visitor's unfamiliarity with the firm — stresses four specific things the
+// client asked to be foregrounded: 30+ years of experience, holding multiple
+// professional certifications (CSP chief among them), manufacturing-specific
+// expertise, and genuine small-business fit. `points` was fully rewritten,
+// one bullet per theme, replacing the previous four (flexible engagement /
+// OSHA penalty documentation) — those are still true and still covered
+// elsewhere (FAQ, Services), just no longer repeated here.
 export const whyUs = {
   eyebrow: 'Why Larson Safety',
   title: 'Big-Firm Expertise. Small-Firm Attention',
   credentialLabel: 'Principal Credential',
   credentialTitle: 'Board Certified Safety Professional (CSP)',
   credentialBody:
-    'Larson Safety is owned and operated by a board-certified safety professional (CSP), the profession’s premier safety credential, with over 30 years of industrial EHS leadership experience. He will work directly with you and your team to identify, develop, and implement environmental, health, and safety programs that fit your needs and budget.',
+    'Larson Safety is owned and operated by a Board Certified Safety Professional (CSP) — the profession’s premier, board-administered credential, and one of several professional safety certifications held — with over 30 years of industrial EHS leadership experience. He will work directly with you and your team to identify, develop, and implement environmental, health, and safety programs that fit your needs and budget.',
   statValue: '30+',
   // The source has a literal newline here, which HTML collapses to a space —
   // it renders on one line. Do not reintroduce a <br>.
   statLabel: 'Years of direct EHS leadership',
   lead: 'Larson Safety was built for employers who need real expertise without the overhead of a full-time safety director.',
   points: [
-    'Programs tailored to your industry, operations, and budget — not off-the-shelf templates.',
-    'Flexible consulting: short-term coverage, fractional support, or project-specific expertise.',
-    'Strengthens compliance, reduces regulatory risk, and supports a safer, more productive workplace.',
-    'Helps document good-faith compliance efforts that may support OSHA penalty reductions.',
+    'Over 30 years of hands-on industrial safety and environmental leadership — not theoretical or classroom-only experience.',
+    'Multiple professional safety certifications, led by the Board Certified Safety Professional (CSP) — the field’s premier, board-administered credential.',
+    'Specific, hands-on expertise across manufacturing — metal, plastics, packaging, printing, and more — not generic compliance advice applied to any industry.',
+    'A genuine understanding of small and mid-sized business needs and resources: realistic budgets, lean teams, and programs sized to match.',
   ],
 };
 
@@ -189,6 +236,11 @@ export const contact = {
   eyebrow: 'Contact Us',
   title: 'Is your workplace ready for an OSHA inspection?',
   body: 'Most employers don’t know what they’re missing until an inspector arrives. Contact Larson Safety today for a free workplace assessment — get a clear picture of where you stand and what to fix first.',
+  // Neutral, due-diligence-appropriate context field — not an urgency triage.
+  // Matches how the client described their actual lead channels.
+  hearAboutUsLabel: 'How did you hear about us?',
+  hearAboutUsOptions: ['Referral / word of mouth', 'Online search', 'Social media', 'Other'],
+  confidentialityNote: 'Reaching out doesn’t commit you to anything — we’ll just talk through where you stand.',
   submitLabel: 'Request a Free Assessment',
   // A Formspree form ID is not a secret — it's visible in every page's HTML
   // source the moment the form renders. No env var needed; change it here.

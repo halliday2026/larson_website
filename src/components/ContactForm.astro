@@ -51,9 +51,25 @@ const labelClass =
   </div>
 
   <div class="mb-[20px]">
+    <label class={labelClass} for="form-field-hear-about-us">{contact.hearAboutUsLabel}</label>
+    <select
+      class={fieldClass}
+      id="form-field-hear-about-us"
+      name="hear_about_us"
+    >
+      <option value="" selected></option>
+      {contact.hearAboutUsOptions.map((option) => <option value={option}>{option}</option>)}
+    </select>
+  </div>
+
+  <div class="mb-[20px]">
     <label class={labelClass} for="form-field-message">Message</label>
     <textarea class={fieldClass} id="form-field-message" name="message" rows="4"></textarea>
   </div>
+
+  <p class="mb-[16px] font-sans text-[13px] leading-[20px] text-[#8E9CA1]">
+    {contact.confidentialityNote}
+  </p>
 
   <button
     type="submit"

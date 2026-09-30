@@ -63,14 +63,19 @@ Both are reimplemented in about 25 lines of vanilla JS:
 
 ## 2. Content that is intentionally absent
 
-### The hidden "How We Work" section
+### The "How We Work" section — hidden on WordPress, live here since 2026-09-29
 
-The page source contains a four-step section (Free Workplace Assessment →
-Prioritized Action Plan → Program Build-Out → Ongoing Support) carrying
-`elementor-hidden-desktop`, `elementor-hidden-tablet` **and**
-`elementor-hidden-mobile`. It renders nowhere on the live site.
+The original page source contains a four-step section (Free Workplace
+Assessment → Prioritized Action Plan → Program Build-Out → Ongoing Support)
+carrying `elementor-hidden-desktop`, `elementor-hidden-tablet` **and**
+`elementor-hidden-mobile`. It rendered nowhere on the live WordPress site.
 
-It is omitted here. To restore it, add a section using this content:
+It was omitted here for the same reason through the initial port. **The
+client asked for it back on 2026-09-29** (see the ICP gap-analysis plan), so
+it's now a real, visible section — `HowWeWork.astro` / `content.ts:
+howWeWork`, between `Services` and `Industries` in `index.astro`. The content
+below is exactly what's live; kept here as the historical record of where it
+came from.
 
 | Step | Heading | Body |
 |---|---|---|
