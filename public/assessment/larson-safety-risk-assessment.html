@@ -387,6 +387,35 @@
     margin-top:18px;
   }
 
+  /* ---------- Share-results form (opt-in lead capture) ---------- */
+  .share-form{margin-top:4px;}
+  .share-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  @media (max-width:640px){.share-row{grid-template-columns:1fr;}}
+  .share-field label{
+    display:block;
+    font-size:11.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:#8E9CA1;
+    margin-bottom:6px;
+  }
+  .share-field input{
+    width:100%;
+    font-family:'Public Sans',sans-serif;
+    font-size:14.5px;
+    padding:11px 13px;
+    border-radius:var(--radius);
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05);
+    color:#fff;
+  }
+  .share-field input::placeholder{color:#6C7A82;}
+  .share-field input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .share-status{font-size:13.5px;margin-top:16px;}
+  .share-status.ok{color:#8FD3A3;}
+  .share-status.err{color:#F0A8A0;}
+
   .restart-row{
     text-align:center;
     margin-top:26px;
@@ -493,12 +522,39 @@
 
     <div class="cta-card">
       <h3>That's your score — no strings attached.</h3>
-      <p>You're free to stop here. If you'd like a second set of eyes on what it means or how to close a gap, a Certified Safety Professional can walk through it with you, in plain terms and in priority order — no pitch, no pressure.</p>
-      <div class="cta-actions">
-        <a class="btn btn-primary" href="mailto:bill@larsonsafe.com?subject=Risk%20Assessment%20Follow-up" id="ctaEmail">Send my results to a consultant</a>
-        <button class="btn btn-ghost" style="background:transparent;color:#fff;border-color:#465257;" onclick="window.print()">Print / save as PDF</button>
-      </div>
-      <div class="cta-note">Contact us: <a href="mailto:bill@larsonsafe.com" style="color:#C7D0D2;">bill@larsonsafe.com</a> or by phone <a href="tel:+19045172187" style="color:#C7D0D2;">904-517-2187</a></div>
+      <p>You're free to stop here. If you'd like a second set of eyes on what it means or how to close a gap, share your results below and a Certified Safety Professional will follow up directly — no pitch, no pressure.</p>
+
+      <form id="shareForm" class="share-form">
+        <div class="share-row">
+          <div class="share-field">
+            <label for="shareName">Your name</label>
+            <input type="text" id="shareName" name="name" autocomplete="name" required>
+          </div>
+          <div class="share-field">
+            <label for="shareEmail">Email</label>
+            <input type="email" id="shareEmail" name="email" autocomplete="email" required>
+          </div>
+        </div>
+        <div class="share-row">
+          <div class="share-field">
+            <label for="shareIndustry">Industry</label>
+            <input type="text" id="shareIndustry" name="industry" placeholder="e.g. Metal manufacturing" required>
+          </div>
+          <div class="share-field">
+            <label for="shareSize">Company size</label>
+            <input type="text" id="shareSize" name="company_size" placeholder="e.g. 45 employees" required>
+          </div>
+        </div>
+
+        <div class="cta-actions">
+          <button type="submit" class="btn btn-primary" id="shareSubmitBtn">Share my results with Larson Safety</button>
+          <button type="button" class="btn btn-ghost" style="background:transparent;color:#fff;border-color:#465257;" onclick="window.print()">Print / save as PDF</button>
+        </div>
+
+        <p id="shareStatus" class="share-status" role="status" aria-live="polite" hidden></p>
+      </form>
+
+      <div class="cta-note">Prefer to reach out directly? <a href="tel:+19045172187" style="color:#C7D0D2;">904-517-2187</a> or <a href="mailto:bill@larsonsafe.com" style="color:#C7D0D2;">bill@larsonsafe.com</a></div>
     </div>
 
     <div class="restart-row">
@@ -737,6 +793,10 @@ categories.forEach(cat => {
 
 let current = 0;
 const answers = new Array(allQuestions.length).fill(null);
+// Plain-text results summary, filled in by showResults() and read by the
+// share-form submit handler below — this is what actually reaches Larson
+// Safety, since the visitor's own quiz answers never leave the browser.
+let lastResultsSummary = '';
 
 function buildProgressRail(){
   const rail = document.getElementById('progressRail');
@@ -909,23 +969,76 @@ function showResults(){
     });
   }
 
-  // pre-fill email body with a summary
-  const bodyLines = [
-    'My Larson Safety, LLC self-assessment results:',
+  // Stash a plain-text summary for the share form's submission payload.
+  lastResultsSummary = [
     'Overall: ' + band.label + ' (' + overallPct + '%)',
     ...categories.map(cat => {
       const cs = catScores[cat.key];
       const pct = Math.round((cs.score/cs.max)*100);
       return cat.name + ': ' + pct + '%';
-    }),
-    '',
-    'I\'d like to talk through these results.'
-  ];
-  const mailBody = encodeURIComponent(bodyLines.join('\n'));
-  document.getElementById('ctaEmail').href = 'mailto:bill@larsonsafe.com?subject=Risk%20Assessment%20Follow-up&body=' + mailBody;
+    })
+  ].join('\n');
 
   results.scrollIntoView({behavior:'smooth'});
 }
+
+// ---------- Share-results form ----------
+// Opt-in only: this is the one thing on the page that leaves the browser,
+// and only when the visitor submits it themselves. Same Formspree endpoint
+// as the main site's contact form (see larsonsafe.com CLAUDE.md — a
+// Formspree endpoint isn't a secret, so it's fine hardcoded here too, this
+// file having no access to that project's content.ts).
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyezzqgv';
+
+document.getElementById('shareForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  if(!form.reportValidity()) return;
+
+  const submitBtn = document.getElementById('shareSubmitBtn');
+  const statusEl = document.getElementById('shareStatus');
+  const original = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+  statusEl.hidden = true;
+
+  const name = document.getElementById('shareName').value;
+  const payload = {
+    name: name,
+    email: document.getElementById('shareEmail').value,
+    industry: document.getElementById('shareIndustry').value,
+    company_size: document.getElementById('shareSize').value,
+    results_summary: lastResultsSummary,
+    _subject: 'Self-Assessment Results — ' + name
+  };
+
+  try{
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+
+    if(!res.ok){
+      const body = await res.json().catch(() => null);
+      const detail = body && body.errors ? body.errors.map(er => er.message).join(', ') : null;
+      throw new Error(detail || String(res.status));
+    }
+
+    form.reset();
+    statusEl.textContent = 'Thanks — your results and info have been sent. We’ll follow up directly.';
+    statusEl.className = 'share-status ok';
+    statusEl.hidden = false;
+    submitBtn.textContent = 'Sent';
+  } catch(err){
+    console.error('[share form]', err);
+    statusEl.textContent = 'Sorry, that didn’t send. Please call 904-517-2187 or email bill@larsonsafe.com directly.';
+    statusEl.className = 'share-status err';
+    statusEl.hidden = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = original;
+  }
+});
 
 function restartAssessment(){
   current = 0;
@@ -933,6 +1046,14 @@ function restartAssessment(){
   document.getElementById('results').style.display = 'none';
   document.getElementById('intro').style.display = 'block';
   document.querySelector('.scope').style.display = 'grid';
+
+  const shareForm = document.getElementById('shareForm');
+  const submitBtn = document.getElementById('shareSubmitBtn');
+  shareForm.reset();
+  document.getElementById('shareStatus').hidden = true;
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Share my results with Larson Safety';
+
   window.scrollTo({top:0, behavior:'smooth'});
 }
 </script>

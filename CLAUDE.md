@@ -68,6 +68,15 @@ excluded from `dist/` and 404s once deployed** — confirmed by testing during
 this file's addition, and the same class of mistake as the base-path incident
 above. If you add another page like this, it must live under `public/`.
 
+The quiz itself is fully offline (answers never leave the browser). The
+results screen's "Share my results with Larson Safety" form is the one
+exception — an opt-in POST to the same Formspree endpoint the main site's
+contact form uses (`https://formspree.io/f/xyezzqgv`, hardcoded here since
+this file has no access to `content.ts`), sent only when the visitor
+submits it. Keep it that way — don't make sharing automatic on quiz
+completion without asking; the page's own copy promises "nothing is sent
+anywhere unless you choose to share."
+
 ## Commands
 
 ```sh
