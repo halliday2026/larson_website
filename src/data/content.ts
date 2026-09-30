@@ -154,7 +154,7 @@ export const howWeWork = {
     {
       number: '04',
       title: 'Ongoing Support',
-      body: 'Fractional safety leadership, audit follow-ups, and real-time access to your compliance records through the LSS hosted EHS platform.',
+      body: 'Fractional safety leadership, audit follow-ups, and real-time access to your compliance records through the Larson Safe hosted EHS platform.',
     },
   ],
 };
@@ -219,7 +219,7 @@ export const faq = {
     },
     {
       q: "What happens if OSHA shows up and we're not ready?",
-      a: 'Citations can carry penalties of over $16,000 per serious violation — and far more for willful or repeated ones. LSS helps you prepare before an inspection and, if one has already occurred, supports post-inspection cost mitigation and documents good-faith efforts that may reduce penalties.',
+      a: 'Citations can carry penalties of over $16,000 per serious violation — and far more for willful or repeated ones. Larson Safe helps you prepare before an inspection and, if one has already occurred, supports post-inspection cost mitigation and documents good-faith efforts that may reduce penalties.',
     },
     {
       q: 'How is fractional safety support different from hiring a safety manager?',
