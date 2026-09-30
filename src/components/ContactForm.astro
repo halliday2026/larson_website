@@ -52,13 +52,26 @@ const labelClass =
 
   <div class="mb-[20px]">
     <label class={labelClass} for="form-field-hear-about-us">{contact.hearAboutUsLabel}</label>
-    <select
-      class={fieldClass}
-      id="form-field-hear-about-us"
-      name="hear_about_us"
-    >
-      <option value="" selected></option>
-      {contact.hearAboutUsOptions.map((option) => <option value={option}>{option}</option>)}
+    <select class={fieldClass} id="form-field-hear-about-us" name="hear_about_us">
+      {/*
+        The <select> itself correctly shows white text on the dark field
+        background, but the native dropdown *popup* renders with the
+        browser's own background (white in every browser tested) regardless
+        of the parent's styling — inheriting text-white from fieldClass into
+        that popup makes every option invisible until hovered/selected.
+        Options get an explicit dark color so they're readable against that
+        native popup background, not the page's dark theme.
+      */}
+      <option value="" selected class="text-[#1B262C]">
+        Select one (optional)
+      </option>
+      {
+        contact.hearAboutUsOptions.map((option) => (
+          <option value={option} class="text-[#1B262C]">
+            {option}
+          </option>
+        ))
+      }
     </select>
   </div>
 
