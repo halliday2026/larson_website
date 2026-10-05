@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import bottlingLineImage from '../assets/manufacturing-bottling-line.jpg';
+import assemblyLineImage from '../assets/manufacturing-assembly-line.jpg';
 import { industries } from '../data/content';
 import Icon from './Icon.astro';
 
@@ -35,6 +38,27 @@ const listItemClass =
       <p class="font-sans text-[15px] font-normal leading-[25px] text-[#F1F1F1] md:text-[16px] md:leading-[31px]">
         {industries.body}
       </p>
+    </div>
+
+    <!--
+      Photos added 2026-10-04 (client-supplied) — real manufacturing-floor
+      shots pairing with the "Manufacturing expertise" card below. A fixed
+      aspect ratio + object-cover keeps both consistent despite differing
+      source dimensions.
+    -->
+    <div class="grid grid-cols-1 gap-[20px] md:grid-cols-2">
+      <Image
+        src={bottlingLineImage}
+        alt="Automated bottling and packaging line in a manufacturing facility"
+        class="aspect-[3/2] w-full rounded-[8px] object-cover"
+        loading="lazy"
+      />
+      <Image
+        src={assemblyLineImage}
+        alt="Robotic assembly line on a manufacturing production floor"
+        class="aspect-[3/2] w-full rounded-[8px] object-cover"
+        loading="lazy"
+      />
     </div>
 
     <div class="grid grid-cols-1 gap-[20px] lg:grid-cols-2">

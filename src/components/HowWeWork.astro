@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import safetyBriefingImage from '../assets/safety-briefing.jpg';
 import { howWeWork } from '../data/content';
 
 /*
@@ -11,25 +13,40 @@ import { howWeWork } from '../data/content';
   Styled to match the established system (section-pad, container-wide,
   eyebrow/heading/body pattern used by Services.astro/Contact.astro) rather
   than any Elementor markup, since none of that markup survived being hidden.
+
+  Photo added 2026-10-04 (client-supplied) using the same text/60 + photo/40
+  side-by-side pattern Services.astro already established, for visual
+  consistency across sections rather than inventing a new layout.
 */
 ---
 
 <section class="section-pad">
   <div class="container-wide flex flex-col gap-[40px]">
-    <div class="flex flex-col gap-[20px] lg:max-w-[60%]">
-      <p
-        class="font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]"
-      >
-        {howWeWork.eyebrow}
-      </p>
-      <h2
-        class="font-sans text-[30px] font-semibold leading-[40px] text-navy-700 md:text-[40px] md:leading-[50px] lg:text-[45px] lg:leading-[60px]"
-      >
-        {howWeWork.title}
-      </h2>
-      <p class="font-sans text-[16px] font-normal leading-[26px] text-[#686868] md:leading-[31px]">
-        {howWeWork.body}
-      </p>
+    <div class="flex flex-col gap-[20px] lg:flex-row lg:items-center">
+      <div class="flex flex-col gap-[20px] lg:w-[60%]">
+        <p
+          class="font-sans text-[10px] font-semibold uppercase leading-[20px] tracking-[0.07rem] text-orange-500 md:text-[12px] md:leading-none md:tracking-[0.22em]"
+        >
+          {howWeWork.eyebrow}
+        </p>
+        <h2
+          class="font-sans text-[30px] font-semibold leading-[40px] text-navy-700 md:text-[40px] md:leading-[50px] lg:text-[45px] lg:leading-[60px]"
+        >
+          {howWeWork.title}
+        </h2>
+        <p class="font-sans text-[16px] font-normal leading-[26px] text-[#686868] md:leading-[31px]">
+          {howWeWork.body}
+        </p>
+      </div>
+
+      <div class="flex flex-col justify-center lg:w-[40%]">
+        <Image
+          src={safetyBriefingImage}
+          alt="Larson Safety walking a facility team through a workplace safety briefing"
+          class="h-auto w-full rounded-[8px]"
+          loading="lazy"
+        />
+      </div>
     </div>
 
     <div class="grid grid-cols-1 gap-[20px] md:grid-cols-2 lg:grid-cols-4">
