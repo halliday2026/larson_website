@@ -25,10 +25,16 @@ export type IconName =
   | 'verified-badge';
 
 export const site = {
+  // "name" stays the formal entity name (used for the brand wordmark and
+  // structured data). "title"/"description" are SEO-facing — rewritten
+  // 2026-10-10 to target how real searchers phrase local-service queries
+  // (brand name alone had zero search-relevant keywords; the old
+  // description ran ~213 chars, well past Google's effective ~155-160 char
+  // display budget, so it was already being cut off blind).
   name: 'Larson Safety LLC.',
-  title: 'Larson Safety LLC.',
+  title: 'Larson Safety | OSHA & EPA Compliance Consulting, NE Florida',
   description:
-    'Workplace safety and environmental compliance consulting for small and mid-sized employers in Northeast Florida. OSHA/EPA regulatory compliance, written safety programs, audits, and fractional safety support.',
+    'OSHA & EPA compliance consulting for small and mid-sized NE Florida employers. Written programs, audits, and fractional safety support — no full-time hire needed.',
   phone: '(904) 517-2187',
   phoneHref: 'tel:+19045172187',
   phoneLabel: 'Call 904-517-2187',

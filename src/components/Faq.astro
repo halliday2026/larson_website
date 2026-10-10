@@ -36,7 +36,13 @@ import Icon from './Icon.astro';
         faq.items.map((item, i) => (
           <details name="faq" open={i === 0} class="group border-b border-solid border-[#E4E4E4]">
             <summary class="flex cursor-pointer list-none items-center justify-between gap-[10px] py-[20px] pr-[20px] font-sans text-[17px] font-medium leading-[26px] md:text-[18px] md:leading-[28px]">
-              <span class="grow">{item.q}</span>
+              {/*
+                h3, not a bare span — Tailwind's preflight already resets
+                heading defaults (margin/font-size/weight all inherit), so
+                this changes nothing visually. Strengthens how clearly both
+                crawlers and AI answer-extraction see "this is a question."
+              */}
+              <h3 class="grow">{item.q}</h3>
               <Icon name="plus" class="h-[15px] w-[15px] shrink-0 group-open:hidden" />
               <Icon name="minus" class="hidden h-[15px] w-[15px] shrink-0 group-open:block" />
             </summary>

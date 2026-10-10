@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { site } from '../data/content';
+import { site, faq } from '../data/content';
 
 interface Props {
   title?: string;
@@ -11,6 +11,62 @@ const { title = site.title, description = site.description } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(`${base}/og-image.jpg`, Astro.site).href;
+
+/*
+  Structured data (JSON-LD), added 2026-10-10 for SEO/AEO/GEO — see
+  PORTING-NOTES.md "SEO / AEO / GEO" section for the full rationale.
+
+  ProfessionalService carries Bill Larson as `founder` (a Person, with his
+  CSP credential) rather than emitting a second, separate top-level Person
+  block — this ties him to the organization directly, which is what matters
+  for E-E-A-T/trust signals, without duplicating the same facts twice.
+
+  FAQPage is generated from faq.items (the exact array Faq.astro renders),
+  so the schema cannot drift out of sync with the visible accordion.
+  No areaServed street address — this is a service-area business, not a
+  public storefront; don't add one without confirming Bill wants it public.
+*/
+const professionalServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  description: site.description,
+  url: canonical,
+  telephone: site.phone,
+  email: site.email,
+  areaServed: {
+    '@type': 'Place',
+    name: 'Northeast Florida, USA',
+  },
+  founder: {
+    '@type': 'Person',
+    name: 'Bill Larson',
+    jobTitle: 'Board Certified Safety Professional (CSP)',
+    hasCredential: {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'certification',
+      name: 'Board Certified Safety Professional (CSP)',
+      recognizedBy: {
+        '@type': 'Organization',
+        name: 'Board of Certified Safety Professionals (BCSP)',
+      },
+    },
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+};
 ---
 
 <!doctype html>
@@ -30,7 +86,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(professionalServiceSchema)}
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
     <!-- Privacy-friendly analytics by Plausible -->
     <script is:inline async src="https://plausible.io/js/pa-4uKfho-6k6CNpq0Y8iL0n.js"></script>

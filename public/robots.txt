@@ -1,0 +1,28 @@
+# Explicit allow-all rather than relying on "no file = default allow" —
+# this is a one-page marketing site with nothing to hide from crawlers.
+# Named AI crawlers are listed individually on purpose: an explicit welcome,
+# not just an absence of a block, since blocking these by default has
+# become common and we want the opposite here (GEO/AEO visibility).
+
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+Sitemap: https://larsonsafe.com/sitemap.xml

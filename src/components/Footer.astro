@@ -75,9 +75,14 @@ const contactItems = [
               i === 2 && 'w-[33%] md:w-[24%] lg:w-[15%] lg:pl-[70px]',
             ]}
           >
-            <h2 class="font-display text-[14px] font-medium uppercase leading-[25px] tracking-[1px] text-surface-200">
+            {/*
+              p, not h2 — a footer nav label isn't a real page section;
+              three extra H2s here were diluting the page's actual topical
+              heading outline for crawlers. Visually identical either way.
+            */}
+            <p class="font-display text-[14px] font-medium uppercase leading-[25px] tracking-[1px] text-surface-200">
               {column.title}
-            </h2>
+            </p>
             <ul class="flex flex-col">
               {column.items.map((item) => (
                 <li class="flex items-center py-[5px] first:pt-0 last:pb-0">

@@ -234,3 +234,51 @@ be reverted in lockstep: `base` back to `/larson_website`, `site` back to the
 `github.io` URL, and delete `public/CNAME` — or the exact same breakage
 recurs, just inverted (asset paths that used to work on the sub-path will
 404 wherever the site actually lives).
+
+---
+
+## 8. SEO / AEO / GEO pass (2026-10-10)
+
+Technical SEO changes, implemented directly (no content/copy changes
+required Bill's approval for this batch — see the separate client-facing
+summary for the content recommendations that still do).
+
+- **Title/description rewritten** (`content.ts: site.title/description`) —
+  the old title was just the brand name with zero search-relevant keywords;
+  the old description ran ~213 characters, past Google's effective
+  ~155–160 character display budget, so it was already being truncated
+  blind. New copy targets how real searchers phrase local-service queries
+  while staying within budget.
+- **Structured data (JSON-LD)** added to `Layout.astro`: `ProfessionalService`
+  (with Bill Larson embedded as `founder`, carrying his CSP credential via
+  `hasCredential`) and `FAQPage`, generated directly from `content.ts:
+  faq.items` so it can't drift from the visible accordion. No street
+  address in `areaServed` — this is a service-area business, not a public
+  storefront; don't add one without confirming Bill wants it public.
+- **`robots.txt`, `sitemap.xml`, `llms.txt`** added to `public/` — none
+  existed before. `llms.txt` is an emerging (not yet universal) convention:
+  a plain-markdown site summary written for LLM retrieval rather than
+  human browsing.
+- **FAQ questions are now `<h3>`** (`Faq.astro`), not a bare `<span>` —
+  Tailwind's preflight already resets heading defaults to inherit, so this
+  is visually a no-op; it exists purely to make "this is a question"
+  unambiguous to crawlers and AI answer-extraction.
+- **Footer column labels are now `<p>`, not `<h2>`** (`Footer.astro`) — three
+  footer-nav labels were rendering as real H2s, diluting the page's actual
+  topical heading outline. Visually identical, same classes carried over.
+- **OG/Twitter image** — `public/og-image.jpg`, generated with
+  `scripts/generate-og-image.py` (Pillow; re-run only if the brand or copy
+  changes) since none of the site's existing photos were both high-enough
+  resolution and uncluttered enough to read well at social-preview
+  thumbnail size. Wired into both `Layout.astro` and the standalone
+  assessment tool page, which previously had no OG tags at all.
+- **Assessment tool meta tags**
+  (`public/assessment/larson-safety-risk-assessment.html`) — had only a
+  `<title>` before; added description, canonical, and OG/Twitter tags, since
+  it's a real indexable page distinct from the homepage.
+
+Verified: `astro check` clean; all four new `public/` files confirmed
+serving at their expected paths from a built preview; both JSON-LD blocks
+parsed and validated as well-formed JSON; Playwright screenshots of the FAQ
+and footer sections confirmed pixel-identical to before the heading changes,
+at both 1440×900 and 390×844; no console/page errors.
