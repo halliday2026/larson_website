@@ -31,15 +31,20 @@ export const site = {
   // (brand name alone had zero search-relevant keywords; the old
   // description ran ~213 chars, well past Google's effective ~155-160 char
   // display budget, so it was already being cut off blind).
+  // "NE Florida" -> "First Coast" throughout the site, 2026-10-13 — the
+  // specific city range (Fernandina Beach/Jacksonville down to Palm Coast,
+  // Gainesville to St. Augustine) lives in the FAQ answer and structured
+  // data, where there's room for it; the short regional name goes everywhere
+  // else so it doesn't crowd tight copy like the title tag or footer blurb.
   name: 'Larson Safety LLC.',
-  title: 'Larson Safety | OSHA & EPA Compliance Consulting, NE Florida',
+  title: 'Larson Safety | OSHA & EPA Compliance Consulting, First Coast FL',
   description:
-    'OSHA & EPA compliance consulting for small and mid-sized NE Florida employers. Written programs, audits, and fractional safety support — no full-time hire needed.',
+    'OSHA & EPA compliance consulting for small and mid-sized First Coast employers. Written programs, audits, and fractional safety support — no full-time hire needed.',
   phone: '(904) 517-2187',
   phoneHref: 'tel:+19045172187',
   phoneLabel: 'Call 904-517-2187',
   email: 'bill@larsonsafe.com',
-  location: 'Northeast Florida',
+  location: 'First Coast, FL',
 };
 
 export const nav = [
@@ -53,7 +58,7 @@ export const nav = [
 
 export const hero = {
   eyebrow: 'Occupational Safety, Environmental & Regulatory Compliance.',
-  title: 'Trusted Safety & Environmental Compliance Consulting for NE Florida',
+  title: 'Trusted Safety & Environmental Compliance Consulting for the First Coast',
   // Leads with direct self-recognition ("no safety department? that's who
   // we work with") rather than burying it at the end of the paragraph —
   // per client direction, proactive/due-diligence framing only, no
@@ -232,8 +237,8 @@ export const faq = {
       a: 'A full-time safety director can cost $80k–$120k+ per year in salary and benefits. Fractional support gives you the same certified expertise — a Board Certified Safety Professional — on a schedule and budget that fits your operation, scaling up or down as needs change.',
     },
     {
-      q: 'Do you work with businesses outside Northeast Florida?',
-      a: 'We work with business across the U.S.',
+      q: 'Do you work with businesses outside the First Coast?',
+      a: 'Our core service area is the First Coast — from Fernandina Beach and Jacksonville down to Palm Coast, and from Gainesville to St. Augustine. We also work with businesses across the U.S.',
     },
   ],
 };
@@ -255,7 +260,7 @@ export const contact = {
 
 export const footer = {
   blurb:
-    'Workplace safety and environmental compliance consulting for small and mid-sized employers in Northeast Florida.',
+    'Workplace safety and environmental compliance consulting for small and mid-sized employers on the First Coast.',
   columns: [
     {
       title: 'Services',

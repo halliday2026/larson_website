@@ -35,10 +35,17 @@ const professionalServiceSchema = {
   url: canonical,
   telephone: site.phone,
   email: site.email,
-  areaServed: {
-    '@type': 'Place',
-    name: 'Northeast Florida, USA',
-  },
+  // Explicit named cities (2026-10-13), not just the regional label — this
+  // is the highest-value spot on the page for this: local search engines
+  // read areaServed as a direct coverage signal, unlike prose mentions.
+  areaServed: [
+    { '@type': 'City', name: 'Fernandina Beach' },
+    { '@type': 'City', name: 'Jacksonville' },
+    { '@type': 'City', name: 'Palm Coast' },
+    { '@type': 'City', name: 'Gainesville' },
+    { '@type': 'City', name: 'St. Augustine' },
+    { '@type': 'Place', name: 'First Coast, Florida, USA' },
+  ],
   founder: {
     '@type': 'Person',
     name: 'Bill Larson',

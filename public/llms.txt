@@ -1,8 +1,8 @@
 # Larson Safety LLC
 
 > Occupational safety, environmental, and regulatory compliance consulting
-> for small and mid-sized industrial and manufacturing employers in
-> Northeast Florida, owned and operated by a Board Certified Safety
+> for small and mid-sized industrial and manufacturing employers on
+> Florida's First Coast, owned and operated by a Board Certified Safety
 > Professional (CSP) with 30+ years of industrial EHS leadership experience.
 
 Larson Safety exists for employers who need real safety and environmental
@@ -45,4 +45,5 @@ the visitor opts in to share their results.
 
 Phone: (904) 517-2187
 Email: bill@larsonsafe.com
-Service area: Northeast Florida
+Service area: Florida's First Coast — Fernandina Beach, Jacksonville, Palm
+Coast, Gainesville, and St. Augustine — plus businesses across the U.S.

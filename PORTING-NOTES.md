@@ -282,3 +282,16 @@ serving at their expected paths from a built preview; both JSON-LD blocks
 parsed and validated as well-formed JSON; Playwright screenshots of the FAQ
 and footer sections confirmed pixel-identical to before the heading changes,
 at both 1440×900 and 390×844; no console/page errors.
+
+### Region name: "NE Florida" → "First Coast" (2026-10-13)
+
+Resolves the "city/county-specific mentions" recommendation from the
+SEO/AEO/GEO summary above — the client confirmed the regional name and
+specific service area. Every mention of "NE Florida"/"Northeast Florida"
+across `content.ts`, `Layout.astro`'s structured data, and `llms.txt` was
+replaced with "First Coast." The specific city range (Fernandina Beach and
+Jacksonville down to Palm Coast, Gainesville to St. Augustine) was added in
+two places with room for it — the FAQ's geographic-coverage answer, and the
+JSON-LD `areaServed` array as individual `City` entries, which is a direct
+local-search coverage signal, not just prose. `public/og-image.jpg` was
+regenerated (`scripts/generate-og-image.py`) to match.

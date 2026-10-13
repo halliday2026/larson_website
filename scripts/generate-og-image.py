@@ -64,7 +64,7 @@ draw.text(
     font=font("arialbd.ttf", 48),
     fill=WHITE,
 )
-draw.text((90, 440), "for Northeast Florida Employers", font=font("arialbd.ttf", 48), fill=WHITE)
+draw.text((90, 440), "for Florida's First Coast", font=font("arialbd.ttf", 48), fill=WHITE)
 
 # Footer line.
 draw.line([(90, 540), (W - 90, 540)], fill=(42, 59, 82), width=1)
