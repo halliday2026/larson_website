@@ -49,8 +49,13 @@ const href = `${base}${selfAssessment.cta.href}`;
       <div class="grid grid-cols-3 gap-[10px] border-b border-[#2A3B52] pb-[24px]">
         {
           selfAssessment.facts.map((fact) => (
-            <div class="text-center">
-              <p class="font-sans text-[22px] font-bold leading-[28px] text-orange-500 md:text-[28px]">
+            // min-w-0 overrides grid's default min-width:auto on items, which
+            // otherwise lets an unbreakable word (e.g. "Complimentary") force
+            // the column wider than its fair share instead of wrapping —
+            // break-words is a fallback for any value without a soft hyphen
+            // (see content.ts) to wrap on, so it can't overflow either way.
+            <div class="min-w-0 text-center">
+              <p class="break-words font-sans text-[22px] font-bold leading-[28px] text-orange-500 md:text-[28px]">
                 {fact.value}
               </p>
               <p class="mt-[4px] font-sans text-[11px] font-normal leading-[16px] text-[#C7D0D2]">

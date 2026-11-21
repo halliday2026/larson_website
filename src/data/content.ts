@@ -49,7 +49,7 @@ export const site = {
 
 export const nav = [
   { label: 'Home', href: '#top' },
-  { label: 'Free Assessment', href: '#assessment' },
+  { label: 'Complimentary Assessment', href: '#assessment' },
   { label: 'Services', href: '#services' },
   { label: 'Industries', href: '#industries' },
   { label: 'About', href: '#about' },
@@ -81,7 +81,7 @@ export const stats = [
 // consultant-led, on-site assessment requested via the contact form; this is
 // a free, instant, self-serve score the visitor can take right now.
 export const selfAssessment = {
-  eyebrow: 'Free Self-Assessment',
+  eyebrow: 'Complimentary Self-Assessment',
   title: 'How would your programs hold up under an audit tomorrow?',
   body: 'Get an instant, private read on your safety, environmental, and risk programs — 20 quick questions across the areas most often tested by an OSHA or EPA inspector, or your insurance carrier. Nothing is shared with us unless you choose to send us your results.',
   categories: [
@@ -93,9 +93,16 @@ export const selfAssessment = {
   facts: [
     { value: '20', label: 'Questions' },
     { value: '5 min', label: 'To complete' },
-    { value: 'Free', label: 'No obligation' },
+    // Soft hyphens (­) at every syllable boundary (com-pli-men-ta-ry)
+    // let the browser pick whichever break actually fits a narrow column,
+    // instead of landing on one fixed point or an arbitrary mid-character
+    // split from overflow-wrap.
+    { value: 'Com­pli­men­ta­ry', label: 'No obligation' },
   ],
-  cta: { label: 'Start the Free Assessment', href: '/assessment/larson-safety-risk-assessment.html' },
+  cta: {
+    label: 'Start the Complimentary Assessment',
+    href: '/assessment/larson-safety-risk-assessment.html',
+  },
 };
 
 export const services = {
@@ -186,7 +193,7 @@ export const industries = {
     title: 'Manufacturing expertise',
     columns: [
       ['Metal', 'Plastics', 'Packaging'],
-      ['Printing', 'Truck/auto upfitting and repair', 'Boat manufacturing'],
+      ['Printing', 'Food', 'Boat manufacturing'],
     ],
   },
 };
