@@ -64,7 +64,7 @@ export const hero = {
   // per client direction, proactive/due-diligence framing only, no
   // incident/urgency language.
   body: 'No in-house safety department? That’s exactly who we work with. Larson Safety helps small and mid-sized Industrial/Manufacturing businesses meet and exceed regulatory requirements, reduce injury risk, and build sustainable risk management and compliance programs – without the cost of full-time safety staff.',
-  primaryCta: { label: 'Request a Free Workplace Assessment', href: '#cta' },
+  primaryCta: { label: 'Request a Complimentary Workplace Assessment', href: '#cta' },
   secondaryCta: { label: 'View Our Services', href: '#services' },
 };
 
@@ -77,7 +77,7 @@ export const stats = [
 
 // The interactive quiz at public/assessment/larson-safety-risk-assessment.html —
 // a separate static page, not part of the Astro build. Distinct from
-// hero.primaryCta ("Request a Free Workplace Assessment"), which is a
+// hero.primaryCta ("Request a Complimentary Workplace Assessment"), which is a
 // consultant-led, on-site assessment requested via the contact form; this is
 // a free, instant, self-serve score the visitor can take right now.
 export const selfAssessment = {
@@ -156,7 +156,7 @@ export const howWeWork = {
   steps: [
     {
       number: '01',
-      title: 'Free Workplace Assessment',
+      title: 'Complimentary Workplace Assessment',
       body: 'We walk your facility, review your current programs and documentation, and identify the gaps an OSHA inspector would find — before they do.',
     },
     {
@@ -253,13 +253,13 @@ export const faq = {
 export const contact = {
   eyebrow: 'Contact Us',
   title: 'Is your workplace ready for an OSHA inspection?',
-  body: 'Most employers don’t know what they’re missing until an inspector arrives. Contact Larson Safety today for a free workplace assessment — get a clear picture of where you stand and what to fix first.',
+  body: 'Most employers don’t know what they’re missing until an inspector arrives. Contact Larson Safety today for a complimentary workplace assessment — get a clear picture of where you stand and what to fix first.',
   // Neutral, due-diligence-appropriate context field — not an urgency triage.
   // Matches how the client described their actual lead channels.
   hearAboutUsLabel: 'How did you hear about us?',
   hearAboutUsOptions: ['Referral / word of mouth', 'Online search', 'Social media', 'Other'],
   confidentialityNote: 'Reaching out doesn’t commit you to anything — we’ll just talk through where you stand.',
-  submitLabel: 'Request a Free Assessment',
+  submitLabel: 'Request a Complimentary Assessment',
   // A Formspree form ID is not a secret — it's visible in every page's HTML
   // source the moment the form renders. No env var needed; change it here.
   formEndpoint: 'https://formspree.io/f/xyezzqgv',
